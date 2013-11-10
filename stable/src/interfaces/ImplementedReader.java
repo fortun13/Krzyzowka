@@ -5,9 +5,7 @@ package interfaces;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileReader;
 import java.io.IOException;
-import java.io.LineNumberReader;
 import java.util.Scanner;
 
 import crossword.*;
@@ -17,7 +15,7 @@ import dictionary.*;
  * @author Jakub Fortunka
  *
  *Struktura pliku z ktorego nalezy czytac:
- *pierwsza linia: wysokosc szerokosc rodzajAlgorytmu(false - simple; true - complicated)
+ *pierwsza linia: wysokosc szerokosc rodzajAlgorytmu(true - simple; false - complicated)
  *np. 30 30 false
  *kolejne linie - wpis pozycjaPrzestrzenna x y
  *np. kabina HORIZ 10 10
@@ -50,9 +48,10 @@ public class ImplementedReader implements Reader {
 		    	String[] linia = p.nextLine().split(" ");
 		    	int height = Integer.parseInt(linia[0]);
 		    	int width = Integer.parseInt(linia[1]);
-		    	Board b = new Board();
+		    	Board b = new Board(width, height);
+		    	cw.setBoard(b);
 		    	Strategy s;
-		    	if (linia[2].equals("false")) s = new SimpleStrategy();
+		    	if (linia[2].equals("true")) s = new SimpleStrategy();
 		    	else s = new ComplicatedStrategy();
 		    	while (p.hasNext()) {
 		    		String[] liniaWyraz = p.nextLine().split(" ");

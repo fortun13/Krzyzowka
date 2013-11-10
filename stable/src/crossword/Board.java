@@ -14,15 +14,23 @@ import java.util.LinkedList;
  */
 public class Board {
 
-	int width=20,height=20;
-	private BoardCell[][] board = new BoardCell[height][width];
+	int width,height;
+	private BoardCell[][] board;
 	/**
 	 * 
 	 */
 	public Board() {
 		// TODO Auto-generated constructor stub
+		this.board = new BoardCell[20][20];
+		this.width=20;
+		this.height=20;
 	}
 	
+	public Board(int width,int height) {
+		this.width=width;
+		this.height=height;
+		this.board = new BoardCell[this.height][this.width];
+	}
 	/**
 	 * @return zwraca szerokosc krzyzowki
 	 */
