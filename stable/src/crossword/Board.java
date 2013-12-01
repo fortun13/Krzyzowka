@@ -51,7 +51,7 @@ public class Board {
 	 * @return komorke o polozeniu (x,y)
 	 */
 	public BoardCell getCell(int x,int y) {
-		return board[x][y];
+		return board[y][x];
 	}
 	
 	/**
@@ -85,7 +85,7 @@ public class Board {
 	public String createPattern(int fromx, int fromy, int tox, int toy) {
 		String pattern="";
 		pattern+="^";
-		if (fromx==tox) {
+		/*if (fromx==tox) {
 			for (int i=fromy;i<toy;i++) {
 				if (board[i][fromx]==null) pattern+=".";
 				else {
@@ -102,7 +102,12 @@ public class Board {
 					else pattern+=".";
 				}
 			}
-		}
+		}*/
+		int ilosc = tox-fromx;
+		String first = board[fromy][0].content;
+		first = first.toLowerCase();
+		pattern+=first + "[A-Za-z]{";
+		pattern+=String.valueOf(ilosc) + "}";
 		pattern+="$";
 		return pattern;
 		/* Testowe 

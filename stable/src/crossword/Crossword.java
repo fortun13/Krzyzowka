@@ -56,7 +56,8 @@ public class Crossword {
 	public Iterator<CwEntry> getROEntryIter() {
 		//Iterator<CwEntry> it = Collections.unmodifiableCollection(entries).iterator();
 		//return it;
-		return Collections.unmodifiableCollection(entries).iterator();
+		//return Collections.unmodifiableCollection(entries).iterator();
+		return Collections.unmodifiableList(entries).iterator();
 	}
 	
 	/**

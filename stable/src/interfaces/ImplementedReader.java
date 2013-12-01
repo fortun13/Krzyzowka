@@ -12,20 +12,21 @@ import crossword.*;
 import dictionary.*;
 
 /**
- * @author Jakub Fortunka
- *
+ * Klasa implementujaca interfejs Reader.
+ * Pozwala odczytywac krzyzowki znajdujace sie w danym folderze (oczywiscie odpowiednio zapisane)
+ * 
  *Struktura pliku z ktorego nalezy czytac:
  *pierwsza linia: wysokosc szerokosc rodzajAlgorytmu(true - simple; false - complicated)
  *np. 30 30 false
  *kolejne linie - wpis pozycjaPrzestrzenna x y
  *np. kabina HORIZ 10 10
+ * 
+ * @author Jakub Fortunka
+ *
  *
  */
 public class ImplementedReader implements Reader {
 
-	/**
-	 * 
-	 */
 	String sciezka;
 	public ImplementedReader(String sciezka) {
 		this.sciezka=sciezka;
@@ -34,13 +35,12 @@ public class ImplementedReader implements Reader {
 	 * @see interfaces.Reader#getAllCws()
 	 */
 	@Override
-	public void getAllCws() throws IOException, WordNotFoundException {
+	public void getAllCws(CwBrowser crosswords) throws IOException, WordNotFoundException {
 		// TODO Auto-generated method stub
 		File folder = new File(sciezka);
 		File[] pliki = folder.listFiles();
 		for (File plik : pliki) {
 		    if (plik.isFile()) {
-		      //  System.out.println(file.getName());
 		    	InteliCwDB db = new InteliCwDB("cwdb.txt");
 		    	Crossword cw = new Crossword(Long.parseLong(plik.getName()));
 		    	cw.setCwDB(db);
@@ -65,6 +65,7 @@ public class ImplementedReader implements Reader {
 		    		else cwe = new CwEntry(e.getWord(), e.getClue(), Direction.VERT, x, y);
 		    		cw.addCwEntry(cwe, s);
 		    	}
+		    	crosswords.addCrossword(cw);
 		    	p.close();
 		    }
 		}

@@ -13,5 +13,5 @@ import crossword.WordNotFoundException;
  */
 public interface Reader {
 
-	public void getAllCws() throws IOException, WordNotFoundException;
+	public void getAllCws(CwBrowser crosswords) throws IOException, WordNotFoundException;
 }

@@ -95,7 +95,8 @@ public class InteliCwDB extends CwDB {
 		}
 		throw new WordNotFoundException();*/
 		LinkedList<Entry> lista = findAll(pattern);
-		if (lista.isEmpty()) throw new WordNotFoundException();
+		//if (lista.isEmpty()) throw new WordNotFoundException();
+		if (lista.isEmpty()) return null;
 		Random rnd = new Random();
 		return lista.get(rnd.nextInt(lista.size()));
 	}

@@ -24,9 +24,10 @@ public class SimpleStrategy extends Strategy {
 	public CwEntry findEntry(Crossword cw) throws WordNotFoundException {
 		Iterator<CwEntry> it = cw.getROEntryIter();
 		if (!it.hasNext()) {
-			Random rnd = new Random();
-			int r = rnd.nextInt(7)+2;
-			Entry n = cw.getCwDB().getRandom(r);
+			//Random rnd = new Random();
+			//int r = rnd.nextInt(7)+2;
+			//Entry n = cw.getCwDB().getRandom();
+			Entry n = cw.getCwDB().getRandom(cw.getBoardCopy().getHeight());
 			CwEntry haslo = new CwEntry(n.getWord(),n.getClue(),Direction.VERT,0,0);
 			return haslo;
 		}
@@ -39,9 +40,14 @@ public class SimpleStrategy extends Strategy {
 			}
 			if (i==first.getWord().length()) return null;
 			Random rnd = new Random();
-			int los = rnd.nextInt(10)+1;
+			int los = rnd.nextInt(cw.getBoardCopy().getWidth()-3)+2;
 			String pat = cw.getBoardCopy().createPattern(first.getX(), first.getY()+i, los, first.getY()+i);
 			Entry e = cw.getCwDB().getRandom(pat);
+			while (e==null) {
+				los = rnd.nextInt(10)+2;
+				pat = cw.getBoardCopy().createPattern(first.getX(), first.getY()+i, los, first.getY()+i);
+				e = cw.getCwDB().getRandom(pat);
+			}
 			CwEntry haslo = new CwEntry(e.getWord(),e.getClue(),Direction.HORIZ,0,i);
 			return haslo;
 		}

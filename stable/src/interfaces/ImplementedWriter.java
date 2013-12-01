@@ -3,7 +3,6 @@ package interfaces;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Date;
@@ -29,7 +28,7 @@ public class ImplementedWriter implements Writer {
 	public void write(Crossword cw) throws FileNotFoundException,IOException {
 		// TODO Auto-generated method stub
 
-		File plik = new File(String.valueOf(this.getUniqueID()));
+		File plik = new File(String.valueOf(this.getUniqueID()) + ".txt");
 		if (!plik.exists()) plik.createNewFile();
 		FileWriter zapis = new FileWriter(plik.getAbsoluteFile());
 		BufferedWriter bw = new BufferedWriter(zapis);
@@ -49,7 +48,7 @@ public class ImplementedWriter implements Writer {
 		}
 		bw.close();
 	}
-
+	
 	@Override
 	public long getUniqueID() {
 		// TODO Auto-generated method stub
