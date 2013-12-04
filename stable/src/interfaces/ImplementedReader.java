@@ -6,6 +6,7 @@ package interfaces;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.Scanner;
 
 import crossword.*;
@@ -28,6 +29,7 @@ import dictionary.*;
 public class ImplementedReader implements Reader {
 
 	String sciezka;
+	
 	public ImplementedReader(String sciezka) {
 		this.sciezka=sciezka;
 	}
@@ -35,9 +37,9 @@ public class ImplementedReader implements Reader {
 	 * @see interfaces.Reader#getAllCws()
 	 */
 	@Override
-	public void getAllCws(CwBrowser crosswords) throws IOException, WordNotFoundException {
+	public Crossword getAllCws() throws IOException, WordNotFoundException {
 		// TODO Auto-generated method stub
-		File folder = new File(sciezka);
+		/*File folder = new File(sciezka);
 		File[] pliki = folder.listFiles();
 		for (File plik : pliki) {
 		    if (plik.isFile()) {
@@ -68,7 +70,27 @@ public class ImplementedReader implements Reader {
 		    	crosswords.addCrossword(cw);
 		    	p.close();
 		    }
-		}
+		}*/
+		Crossword cw = null;
+		try
+	    {
+	       FileInputStream fileIn = new FileInputStream(sciezka);
+	       ObjectInputStream in = new ObjectInputStream(fileIn);
+	       cw = (Crossword) in.readObject();
+	       in.close();
+	       fileIn.close();
+	       return cw;
+	    }catch(IOException i)
+	    {
+	       i.printStackTrace();
+	       return null;
+	    }catch(ClassNotFoundException c)
+	    {
+	       System.out.println("Employee class not found");
+	        c.printStackTrace();
+	        return null;
+	    }
+		
 	}
 
 }

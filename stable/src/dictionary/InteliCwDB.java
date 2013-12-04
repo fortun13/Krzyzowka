@@ -6,6 +6,7 @@ package dictionary;
 import crossword.WordNotFoundException;
 
 import java.io.FileNotFoundException;
+import java.io.Serializable;
 import java.text.Collator;
 import java.util.Collections;
 import java.util.Comparator;
@@ -20,15 +21,19 @@ import java.util.Random;
  * @author Jakub Fortunka
  *
  */
-public class InteliCwDB extends CwDB {
-
+public class InteliCwDB extends CwDB implements Serializable {	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2705552648337775200L;
+	
 	/**
 	 * Konstruktor korzysta z konstruktora klasy bazowej.
 	 * 
 	 * @param filename sciezka do pliku z danymi do slownika
 	 * @throws FileNotFoundException
 	 */
-	public InteliCwDB(String filename) throws FileNotFoundException {
+	public InteliCwDB(String filename) {
 		super(filename);
 		// TODO Auto-generated constructor stub
 	}

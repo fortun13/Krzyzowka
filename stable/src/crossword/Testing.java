@@ -26,9 +26,6 @@ public class Testing {
 			SimpleStrategy s = new SimpleStrategy();
 			cw.generate(s);
 			cw.getBoardCopy().printBoard();
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		} catch (WordNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

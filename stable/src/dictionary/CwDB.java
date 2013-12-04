@@ -11,6 +11,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.Scanner;
 
@@ -22,8 +23,13 @@ import java.util.Scanner;
  * @author Jakub Fortunka
  *
  */
-public class CwDB {
+public class CwDB implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1855598157340500387L;
+	
 	protected LinkedList<Entry> dict = new LinkedList<Entry>();
 	
 	/**
@@ -32,7 +38,7 @@ public class CwDB {
 	 * @param filename sciezka do pliku z danymi do slownika
 	 * @throws FileNotFoundException
 	 */
-	public CwDB(String filename) throws FileNotFoundException {
+	public CwDB(String filename) {
 		this.createDB(filename);
 	}
 
@@ -97,14 +103,21 @@ public class CwDB {
 	 * @param filename sciezka do pliku zawierajacego dane dla slownika
 	 * @throws FileNotFoundException
 	 */
-	protected void createDB(String filename) throws FileNotFoundException {
-		Scanner plik = new Scanner(new FileInputStream(filename));
-		String word,clue;
-		while (plik.hasNext()) {
-			word = plik.nextLine();
-			clue = plik.nextLine();
-			add(word, clue);
+	protected void createDB(String filename) {
+		try {
+			Scanner plik;
+			plik = new Scanner(new FileInputStream(filename));
+			String word,clue;
+			while (plik.hasNext()) {
+				word = plik.nextLine();
+				clue = plik.nextLine();
+				add(word, clue);
+			}
+			plik.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		plik.close();
+		
 	}
 }

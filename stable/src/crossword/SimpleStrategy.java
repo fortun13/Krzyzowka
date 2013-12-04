@@ -38,6 +38,7 @@ public class SimpleStrategy extends Strategy {
 				i++;
 				it.next();
 			}
+			int licznik=0;
 			if (i==first.getWord().length()) return null;
 			Random rnd = new Random();
 			int los = rnd.nextInt(cw.getBoardCopy().getWidth()-3)+2;
@@ -47,6 +48,8 @@ public class SimpleStrategy extends Strategy {
 				los = rnd.nextInt(10)+2;
 				pat = cw.getBoardCopy().createPattern(first.getX(), first.getY()+i, los, first.getY()+i);
 				e = cw.getCwDB().getRandom(pat);
+				licznik++;
+				if (licznik>300) System.exit(0);
 			}
 			CwEntry haslo = new CwEntry(e.getWord(),e.getClue(),Direction.HORIZ,0,i);
 			return haslo;

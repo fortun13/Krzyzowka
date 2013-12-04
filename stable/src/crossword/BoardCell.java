@@ -3,14 +3,21 @@
  */
 package crossword;
 
+import java.io.Serializable;
+
 /**
  * Klasa ktora reprezentuje jedna komorke krzyzowki
  * 
  * @author Jakub Fortunka
  *
  */
-public class BoardCell {
+public class BoardCell implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1205507291299789208L;
+	
 	String content="";
 	boolean canHorizStart,canHorizIn,canHorizEnd;
 	boolean canVertiStart,canVertiIn,canVertiEnd;

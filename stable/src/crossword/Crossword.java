@@ -4,6 +4,7 @@
 package crossword;
 
 import java.io.FileNotFoundException;
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -17,8 +18,13 @@ import dictionary.InteliCwDB;
  * @author Jakub Fortunka
  *
  */
-public class Crossword {
+public class Crossword implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5777932156704852796L;
+	
 	private LinkedList<CwEntry> entries = new LinkedList<CwEntry>();
 	private Board b;
 	private InteliCwDB cwdb;
@@ -80,7 +86,10 @@ public class Crossword {
 	 * @param cwdb baza hasel do przypisania
 	 */
 	public void setCwDB(InteliCwDB cwdb) {
-		this.cwdb=cwdb;
+		InteliCwDB cwDB = null;
+		if (cwdb==null) 	cwDB = new InteliCwDB("cwdb.txt");
+		else cwDB = cwdb;
+		this.cwdb=cwDB;
 	}
 	
 	/**

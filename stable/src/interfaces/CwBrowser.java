@@ -25,7 +25,8 @@ public class CwBrowser {
 	
 	public void readCrossword(String file) throws IOException, WordNotFoundException {
 		ImplementedReader r = new ImplementedReader(file);
-		r.getAllCws(this);
+		//r.getAllCws(this);
+		addCrossword(r.getAllCws());
 	}
 	
 	public void addCrossword(Crossword cw) {
@@ -46,6 +47,14 @@ public class CwBrowser {
 	
 	public Crossword getCrossword(int index) {
 		return crosswords.get(index);
+	}
+	
+	public int getNumberOfCrosswords() {
+		return crosswords.size();
+	}
+	
+	public Crossword getLastCrossword() {
+		return crosswords.getLast();
 	}
 	
 }

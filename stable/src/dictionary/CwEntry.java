@@ -3,12 +3,19 @@
  */
 package dictionary;
 
+import java.io.Serializable;
+
 /**
  * @author Jakub Fortunka
  *
  */
-public class CwEntry extends Entry {
+public class CwEntry extends Entry implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6258824129283325212L;
+	
 	private int x,y;
 	private Direction d;
 	

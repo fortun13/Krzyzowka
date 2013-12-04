@@ -3,13 +3,20 @@
  */
 package dictionary;
 
+import java.io.Serializable;
+
 
 /**
  * @author Jakub Fortunka
  *
  */
-public class Entry {
+public class Entry implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7099379369719944830L;
+	
 	private String word;
 	private String clue;
 	

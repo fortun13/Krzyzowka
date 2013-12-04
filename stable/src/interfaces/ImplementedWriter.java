@@ -3,8 +3,10 @@ package interfaces;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.Date;
 import java.util.Iterator;
 
@@ -28,7 +30,7 @@ public class ImplementedWriter implements Writer {
 	public void write(Crossword cw) throws FileNotFoundException,IOException {
 		// TODO Auto-generated method stub
 
-		File plik = new File(String.valueOf(this.getUniqueID()) + ".txt");
+		/*File plik = new File(String.valueOf(this.getUniqueID()) + ".txt");
 		if (!plik.exists()) plik.createNewFile();
 		FileWriter zapis = new FileWriter(plik.getAbsoluteFile());
 		BufferedWriter bw = new BufferedWriter(zapis);
@@ -46,7 +48,20 @@ public class ImplementedWriter implements Writer {
 			CwEntry wpis = it.next();
 			bw.write(wpis.getWord() + " " + wpis.getD().toString() + " " + wpis.getX() + " " + wpis.getY() + "\n");
 		}
-		bw.close();
+		bw.close();*/
+		
+		try
+	      {
+	         FileOutputStream fileOut = new FileOutputStream(String.valueOf(this.getUniqueID()) + ".txt");
+	         ObjectOutputStream out = new ObjectOutputStream(fileOut);
+	         out.writeObject(cw);
+	         out.close();
+	         fileOut.close();
+	    //     System.out.printf("Serialized data is saved in /tmp/employee.ser");
+	      }catch(IOException i)
+	      {
+	          i.printStackTrace();
+	      }
 	}
 	
 	@Override

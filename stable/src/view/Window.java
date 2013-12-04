@@ -13,6 +13,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 import javax.swing.JButton;
 
 import java.awt.event.ActionListener;
@@ -23,6 +24,9 @@ import java.awt.Color;
 
 import javax.swing.JToolBar;
 import javax.swing.JMenuBar;
+import javax.swing.JTextPane;
+import javax.swing.JTextArea;
+import javax.swing.UIManager;
 
 /**
  * @author Jakub Fortunka
@@ -33,6 +37,8 @@ public class Window extends JFrame {
 	private JPanel contentPane;
 	private CwBrowser crosswords;
 	private CrosswordPanel crosswordPanel;
+	private JPanel cluePanel;
+	private JTextArea textArea;
 
 	/**
 	 * Launch the application.
@@ -54,18 +60,49 @@ public class Window extends JFrame {
 	 * Create the frame.
 	 */
 	public Window() {
+		setTitle("Program do generowania krzyzowek");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 572, 361);
+		setBounds(100, 100, 709, 453);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
 		
 		crosswordPanel = new CrosswordPanel();
+		crosswordPanel.setBackground(Color.GRAY);
+		crosswordPanel.setBorder(new LineBorder(Color.black));
 		contentPane.add(crosswordPanel, BorderLayout.CENTER);
-		OptionPanel optionPanel = new OptionPanel(crosswordPanel,contentPane);
+		
+		
+		cluePanel = new JPanel();
+		cluePanel.setBackground(Color.WHITE);
+		contentPane.add(cluePanel, BorderLayout.SOUTH);
+		
+		textArea = new JTextArea();
+		textArea.setBackground(Color.WHITE);
+		textArea.setEditable(false);
+		cluePanel.add(textArea);
+		
+		OptionPanel optionPanel = new OptionPanel(crosswordPanel,this,textArea);
 		contentPane.add(optionPanel, BorderLayout.NORTH);
 		
+		//textArea.setText("Test");
+		
+		
+	}
+
+	/**
+	 * @return the crosswords
+	 */
+	public CwBrowser getCrosswords() {
+		return crosswords;
+	}
+
+	/**
+	 * @return the contentPane
+	 */
+	public JPanel getContentPane() {
+		return contentPane;
 	}
 
 

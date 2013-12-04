@@ -3,6 +3,7 @@
  */
 package crossword;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 
 
@@ -12,8 +13,13 @@ import java.util.LinkedList;
  * @author Jakub Fortunka
  *
  */
-public class Board {
+public class Board implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -995417858715296474L;
+	
 	int width,height;
 	private BoardCell[][] board;
 	/**

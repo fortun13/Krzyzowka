@@ -22,10 +22,15 @@ import javax.swing.BoxLayout;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JTable;
+import javax.swing.UIManager;
+import javax.swing.border.LineBorder;
+import javax.swing.border.MatteBorder;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
 import java.awt.GridLayout;
+
 import javax.swing.JScrollPane;
 
 /**
@@ -35,6 +40,8 @@ import javax.swing.JScrollPane;
 public class CrosswordPanel extends JPanel {
 	private JTable table;
 	private DefaultTableModel tableModel;
+	//private MyTableModel tableModel;
+	
 	/**
 	 * @return the tableModel
 	 */
@@ -49,8 +56,8 @@ public class CrosswordPanel extends JPanel {
 		super();
 		setBackground(Color.LIGHT_GRAY);
 		tableModel = new DefaultTableModel(new Object[]{},0);
+		//tableModel = new MyTableModel();
         setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-        
         table = new JTable();
         add(table);
         table.setBackground(Color.LIGHT_GRAY);
@@ -76,15 +83,25 @@ public class CrosswordPanel extends JPanel {
 		Graphics g = this.getGraphics();
 		//table.addColumn("KolumnaTestowa");
 		//super.paint(g);
-		int index = 0;
+		//table.setOpaque(true);
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-        while (index < tableModel.getColumnCount()) {
-            TableColumn a = table.getColumnModel().getColumn(index);
-            table.setRowHeight(50);
-            a.setPreferredWidth(50);
-            index++;
-        }
-        super.paint(g);
+		Color color = UIManager.getColor("Table.gridColor");
+	//	MatteBorder border = new MatteBorder(2, 2, 2, 2, color);
+	//	table.setBorder(border);
+		//not working
+	//	DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+	//	centerRenderer.setHorizontalAlignment( JLabel.LEFT );
+		MyTableCellRenderer centerRenderer = new MyTableCellRenderer();
+	//	centerRenderer.setBorder(border);
+		table.setDefaultRenderer(String.class, centerRenderer);
+		//table.getColumnModel().getColumn(0).
+		
+		for (int i=0;i<tableModel.getColumnCount();i++) {
+			TableColumn a = table.getColumnModel().getColumn(i);
+			a.setPreferredWidth(40);
+			table.setRowHeight(40);
+		}
+        super.repaint();
 		//g.drawString("Testowy String", 50, 50);
 	}
 }
