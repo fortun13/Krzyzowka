@@ -11,6 +11,7 @@ import javax.swing.JTextArea;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+
 import javax.swing.JButton;
 
 import java.awt.event.ActionListener;
@@ -33,6 +34,7 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.table.DefaultTableModel;
 
 import java.awt.FlowLayout;
+
 import crossword.*;
 import dictionary.*;
 
@@ -47,20 +49,88 @@ public class OptionPanel extends JPanel implements ActionListener {
 	 */
 	private static final long serialVersionUID = -7931596291324954652L;
 	
+	/**
+	 * Glowne okno programu
+	 */
 	private JFrame frame;
+	/**
+	 * Panel w ktorym rysowana jest krzyzowka
+	 */
 	private CrosswordPanel cw;
+	/**
+	 * przycisk do otwierania slownika
+	 */
+	/**
+	 * przycisk do generowania krzyzowki
+	 */
+	/**
+	 * przycisk do otwierania krzyzowki/krzyzowek z pliku/folderu
+	 */
+	/**
+	 * przycisk do drukowania krzyzowki
+	 */
+	/**
+	 * przycisk do rozwiazywania krzyzowki
+	 */
+	/**
+	 * przycisk do zapisywania krzyzowki
+	 */
 	private JButton btnOpenDict,btnGenCw,btnLoadCw,btnPrint,btnSolveCw,btnSaveCw;
+	/**
+	 * zajmuje sie wczytywanie plikow
+	 */
 	private JFileChooser fc;
+	/**
+	 * symbol nowej linii
+	 */
 	private String newline = "\n";
+	/**
+	 * pole do wprowadzania wysokosci krzyzowki
+	 */
+	/**
+	 * pole do wprowadzania szerokosci krzyzowki
+	 */
 	private JSpinner height,width;
+	/**
+	 * baza hasel krzyzowki (jezeli ustawiona na null, brany jest domyslny slownik)
+	 */
 	private InteliCwDB cwDB = null;
+	/**
+	 * pole tekstowe na ktorym wyswietlane sa podpowiedzi do hasel
+	 */
 	private JTextArea clueArea;
+	/**
+	 * obiekt klasy zajmujacej sie zarzadzaniem krzyzowkami
+	 */
 	private CwBrowser crosswords;
+	/**
+	 * numer obecnie wyswietlanej krzyzowki 
+	 */
+	/**
+	 * ilosc wygenerowanych krzyzowek
+	 */
 	private int indexOfCrossword = -1, numberOfGeneratedCrosswords=0;
+	/**
+	 * Panel w ktorym jest lista do zarzadzania wczytanymi krzyzowkami
+	 */
 	private JPanel cwIO;
+	/**
+	 * Model listy
+	 */
 	private DefaultListModel<String> listModel;
+	/**
+	 * lista na ktorej pojawiaja sie wygenerowane/wczytane krzyzowki
+	 */
 	private JList<String> list;
 	
+	/**
+	 * Kontruktor panelu
+	 * 
+	 * @param cw Panel w ktorym bedzie rysowana krzyzowka {@link #cw}
+	 * @param main glowne okno {@link #frame}
+	 * @param text pole w ktorym beda wypisywane podpowiedzi {@link #clueArea}
+	 * @param l lista krzyzowek, ktora bedzie zarzadzana z tej klasy {@link #list}
+	 */
 	public OptionPanel(CrosswordPanel cw, Window main,JTextArea text, JList<String> l) {
 		setBackground(SystemColor.activeCaption);
 		main.getContentPane();
@@ -68,13 +138,11 @@ public class OptionPanel extends JPanel implements ActionListener {
 		this.cw=cw;
 		this.clueArea = text;
 		this.crosswords = new CwBrowser();
-		//this.list=l;
 		listModel = new DefaultListModel<String>();
 		l.setModel(listModel);
 		this.list=l;
 		
 		/* Panel w ktorym znajduja sie opcje generacji krzyzowki */	
-		
 		
 		fc = new JFileChooser();
 		setLayout(new BorderLayout(0, 0));
@@ -136,126 +204,51 @@ public class OptionPanel extends JPanel implements ActionListener {
         
 	}
 	
+	/**
+	 * Metoda zajmuje sie przechwytywaniem zdarzen i wykonywaniem wtedy odpowiednich operacji
+	 * Korzysta z prywatnych metod wewnetrznych
+	 * {@link #generateNewCrossword()}
+	 * {@link #openDictionary()}
+	 * {@link #loadCrossword()}
+	 * {@link #saveCrossword()}
+	 * {@link #paintCrossword(boolean)}
+	 * {@link #writeClues()}
+	 * 
+	 * @param e rodzaj wykonanej akcji 
+	 * 
+	 * {@inheritDoc}
+	 */
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == btnGenCw) {
-			try {
-				/*Crossword cross = new Crossword();
-				Board b = new Board((int)width.getValue(), (int)height.getValue());
-				cross.setCwDB(cwDB);
-				cross.setBoard(b);
-				SimpleStrategy s = new SimpleStrategy();
-				cross.generate(s);
-				crosswords.addCrossword(cross);*/
-				crosswords.addCrossword(crosswords.generateCrossword((int)height.getValue(), (int)width.getValue(), new SimpleStrategy(), cwDB));
-				indexOfCrossword++;
-				numberOfGeneratedCrosswords++;
-				listModel.addElement("Krzyzowka" + String.valueOf(numberOfGeneratedCrosswords));
-				/*String[] lista = new String[(int)width.getValue()];
-				for (int i=0;i<(int)width.getValue();i++) {
-					lista[i] = String.valueOf(i);
-				}
-				String[] row = new String[(int)width.getValue()+1];
-				DefaultTableModel tmp = new DefaultTableModel(lista,0);
-				//MyTableModel tmp = new MyTableModel(lista,0);
-				int dlugoscWyrazu = 0;
-				Iterator<CwEntry> it = cross.getROEntryIter();
-				it.next();
-				for (int i=0;i<(int)height.getValue();i++) {
-					dlugoscWyrazu = it.next().getWord().length();
-					for (int k=0;k<row.length;k++) row[k]="";
-					for (int j=0;j<dlugoscWyrazu+1;j++){
-						if (j==0) row[j]=String.valueOf(i+1);
-						//else row[j] = cross.getBoardCopy().getCell(j-1, i).getContent();
-						else row[j]="";
-					}
-					tmp.addRow(row);
-				}
-				cw.setTableModel(tmp);
-				//cw.getTableModel().addRow(new Object[]{"Test1","Test2"});*/
-				paintCrossword(true);
-				writeClues();
-				
-				//cw.paint2();
-			}
-			catch (WordNotFoundException | FileNotFoundException e1) {
-				e1.printStackTrace();
-			}
-			
+			generateNewCrossword();
 		}
 		else if (e.getSource() == btnOpenDict)	{
-			if(fc.showOpenDialog(frame) != JFileChooser.APPROVE_OPTION)	{
-			//	JOptionPane.showMessageDialog(frame, "Blad krytyczny :(");
-				return ;
-			}
-			
-			File f = fc.getSelectedFile();
-			cwDB = new InteliCwDB(f.getAbsolutePath());
+			openDictionary();
 		}
 		else if (e.getSource() == btnLoadCw) {
-			if (fc.showOpenDialog(frame) != JFileChooser.APPROVE_OPTION) return;
-			File f = fc.getSelectedFile();
-			try {
-				crosswords.readCrossword(f.getAbsolutePath());
-				indexOfCrossword++;
-				paintCrossword(true);
-				writeClues();
-				listModel.addElement(f.getName().substring(0, f.getName().length()-4));
-			} catch (IOException | WordNotFoundException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
+			loadCrossword();
 		}
 		else if (e.getSource() == btnSaveCw) {
-			if (indexOfCrossword <0) {
-				JOptionPane.showMessageDialog(frame, "Nie wygenerowales zadnej krzyzowki!");
-				return ;
-			}
-			//if (fc.showSaveDialog(frame) != JFileChooser.APPROVE_OPTION) return;
-			try {
-				crosswords.saveCrossword(crosswords.getCrossword(indexOfCrossword));
-				JOptionPane.showMessageDialog(frame, "Zapisalem!");
-			} catch (FileNotFoundException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-			
+			saveCrossword();
 		}
-		/*else if (e.getSource() == btnLoadCw) {
-			JFileChooser fc = new JFileChooser();
-			
-			if(fc.showOpenDialog(frame) != JFileChooser.APPROVE_OPTION)
-			{
-				return;
-			}
-			
-			File f = fc.getSelectedFile();
-			
-			try
-			{
-				Crossword cw = main.getCrosswords().readCrossword(f.getAbsolutePath());
-				openCrossword(cw, cw.getID() == -1 ? "Otwarta krzyÅ¼Ã³wka" : "" + cw.getID());
-			}
-			catch(IOException ex)
-			{
-				JOptionPane.showMessageDialog(frame, "Nie moÅ¼na wczytaÄ‡ tego pliku.", "Ups!", JOptionPane.ERROR_MESSAGE);
-			}
-		}*/
 		else if (e.getSource() == btnSolveCw) {
 			paintCrossword(false);
 			writeClues();
 		}
-		
 	}
 	
+	/**
+	 * Metoda wykonujaca rysowanie na {@link CrosswordPanel}. Wykorzystuje jej wewnetrzna metode {@link CrosswordPanel#paint2(int[])};
+	 * 
+	 * @param isGenerating jesli true to krzyzowka nie wyswietla wpisanych hasel (pozostawione sa puste kwadraty)
+	 */
 	private void paintCrossword(boolean isGenerating) {
 		String[] lista = new String[(int)width.getValue()];
 		for (int i=0;i<(int)width.getValue();i++) {
 			lista[i] = String.valueOf(i);
 		}
 		String[] row = new String[(int)width.getValue()+1];
+		int[] entriesLength = new int[(int)height.getValue()];
 		DefaultTableModel tmp = new DefaultTableModel(lista,0) {
 			/**
 			 * 
@@ -268,12 +261,12 @@ public class OptionPanel extends JPanel implements ActionListener {
 		        else return true;
 		    }
 		};
-		//MyTableModel tmp = new MyTableModel(lista,0);
 		int dlugoscWyrazu = 0;
 		Iterator<CwEntry> it = crosswords.getCrossword(indexOfCrossword).getROEntryIter();
 		it.next();
 		for (int i=0;i<(int)height.getValue();i++) {
 			dlugoscWyrazu = it.next().getWord().length();
+			entriesLength[i] = dlugoscWyrazu;
 			for (int k=0;k<row.length;k++) row[k]="";
 			for (int j=0;j<dlugoscWyrazu+1;j++){
 				if (j==0) row[j]=String.valueOf(i+1);
@@ -284,21 +277,127 @@ public class OptionPanel extends JPanel implements ActionListener {
 		}
 		
 		cw.setTableModel(tmp);
-		//cw.getTableModel().addRow(new Object[]{"Test1","Test2"});
-		cw.paint2();
+		cw.paint2(entriesLength);
 	}
 	
+	/**
+	 * Metoda wypisuje na odpowiednim panelu podpowiedzi do hasel krzyzowki
+	 */
 	private void writeClues() {
 		
 		Iterator<CwEntry> it = crosswords.getCrossword(indexOfCrossword).getROEntryIter();
 		it.next();
 		String tekst = "";
 		for (int i=0;i<(int)height.getValue();i++) {
-			//clueArea.setText(it.next().getClue());
 			tekst+= String.valueOf(i+1) + ". " + it.next().getClue() + newline;	
 		}
 		clueArea.setText(tekst);
-		//clueArea.setText("Test");
 	}
-
+	
+	/**
+	 * Wewnetrzna metoda generujaca nowa krzyzowke
+	 * 
+	 */
+	private void generateNewCrossword() {
+		try {
+			crosswords.addCrossword(crosswords.generateCrossword((int)height.getValue(), (int)width.getValue(), new SimpleStrategy(), cwDB));
+			indexOfCrossword++;
+			numberOfGeneratedCrosswords++;
+			listModel.addElement("Krzyzowka" + String.valueOf(numberOfGeneratedCrosswords));
+			paintCrossword(true);
+			writeClues();
+			
+			//cw.paint2();
+		}
+		catch (FileNotFoundException e1) {
+			JOptionPane.showMessageDialog(frame, "Program nie znalaz³ pliku s³ownika (wczyta³eœ go?)");
+			return ;
+		}
+		catch (WordNotFoundException ex) {
+			JOptionPane.showMessageDialog(frame, "Program wylosowal takie haslo, ze nie potrafi znalezc hasel. Sprobuj wygenerowac krzyzowke jeszcze raz :)");
+			return ;
+		}
+	}
+	
+	/**
+	 * Wewnetrzna metoda zajmujaca sie wczytywaniem pliku slownika
+	 */
+	private void openDictionary() {
+		if(fc.showOpenDialog(frame) != JFileChooser.APPROVE_OPTION)	{
+			JOptionPane.showMessageDialog(frame,
+				    "Nie jestem w stanie zainicjowaæ okna wyboru pliku (coœ siê mocno popsu³o :()",
+				    "B³¹d inicjalizacji okna",
+				    JOptionPane.ERROR_MESSAGE);
+			return ;
+		}
+		
+		File f = fc.getSelectedFile();
+		try {
+			cwDB = new InteliCwDB(f.getAbsolutePath());
+		} catch (FileNotFoundException e1) {
+			JOptionPane.showMessageDialog(frame,
+				    "Program nie znalaz³ pliku s³ownika (wczyta³eœ go?)",
+				    "B³ad wczytywania krzy¿ówki",
+				    JOptionPane.ERROR_MESSAGE);
+		}
+	}
+	
+	/**
+	 * Wewnetrzna metoda obslugujaca wczytywanie krzyzowki ze wskazanego pliku
+	 */
+	private void loadCrossword() {
+		if (fc.showOpenDialog(frame) != JFileChooser.APPROVE_OPTION) {
+			JOptionPane.showMessageDialog(frame,
+				    "Nie jestem w stanie zainicjowaæ okna wyboru pliku (coœ siê mocno popsu³o :()",
+				    "B³¹d inicjalizacji okna",
+				    JOptionPane.ERROR_MESSAGE);
+			return ;
+		}
+		File f = fc.getSelectedFile();
+		try {
+			crosswords.readCrossword(f.getAbsolutePath());
+			indexOfCrossword++;
+			paintCrossword(true);
+			writeClues();
+			listModel.addElement(f.getName().substring(0, f.getName().length()-4));
+		} catch (IOException e1) {
+			JOptionPane.showMessageDialog(frame,
+				    "Problemy z wczytywaniem (spróbuj ponownie, mo¿e siê uda ;))",
+				    "B³ad wczytywania krzy¿ówki",
+				    JOptionPane.ERROR_MESSAGE);
+			e1.printStackTrace();
+		} catch (ClassNotFoundException e1) {
+			JOptionPane.showMessageDialog(frame,
+				    "Plik, który poda³eœ do wczytania jest najprawdopodobniej b³êdny",
+				    "B³ad wczytywania krzy¿ówki",
+				    JOptionPane.ERROR_MESSAGE);
+		} catch (WordNotFoundException e) {
+			JOptionPane.showMessageDialog(frame,
+				    "Nie znaleziono pliku do wczytania (co dziwne, bo go wskaza³eœ...)",
+				    "B³ad wczytywania krzy¿ówki",
+				    JOptionPane.ERROR_MESSAGE);
+		}
+	}
+	
+	/**
+	 * Metoda zajmuje sie zapisywaniem wyswietlanej krzyzowki do pliku
+	 */
+	private void saveCrossword() {
+		if (indexOfCrossword <0) {
+			JOptionPane.showMessageDialog(frame,
+				    "Nie wygenerowa³eœ ¿adnej krzy¿ówki, jak mam cokolwiek zapisaæ cwaniaku?",
+				    "B³¹d zapisywania krzy¿ówki",
+				    JOptionPane.WARNING_MESSAGE);
+			return ;
+		}
+		try {
+			crosswords.saveCrossword(crosswords.getCrossword(indexOfCrossword));
+			JOptionPane.showMessageDialog(frame, "Zapisa³em!");
+		} catch (FileNotFoundException e1) {
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		
+	}
 }

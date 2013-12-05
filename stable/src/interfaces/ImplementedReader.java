@@ -8,115 +8,85 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.LinkedList;
+
 import crossword.*;
 
 /**
  * Klasa implementujaca interfejs Reader.
- * Pozwala odczytywac krzyzowki znajdujace sie w danym folderze (oczywiscie odpowiednio zapisane)
+ * Pozwala odczytywac krzyzowki znajdujace sie w danym folderze. Odczytuje pliki zapisane z pomoc¹ serializacji,
+ * która wykonywana jest poprzez klasê ImplementedWriter
  * 
- *Struktura pliku z ktorego nalezy czytac:
- *pierwsza linia: wysokosc szerokosc rodzajAlgorytmu(true - simple; false - complicated)
- *np. 30 30 false
- *kolejne linie - wpis pozycjaPrzestrzenna x y
- *np. kabina HORIZ 10 10
+ * @see Reader
+ * 
  * 
  * @author Jakub Fortunka
+ * @version 1.0
  *
  *
  */
 public class ImplementedReader implements Reader {
 
-	String sciezka;
+	private String sciezka;
 	
+	/**
+	 * Konstruktor. Przyjmuje sciezke do pliku badz folderu.
+	 * 
+	 * @param sciezka sciezka do pliku lub folderu
+	 */
 	public ImplementedReader(String sciezka) {
 		this.sciezka=sciezka;
 	}
-	/* (non-Javadoc)
-	 * @see interfaces.Reader#getAllCws()
+
+	/**
+	 * Metoda implementujaca metode interfejsu. Wczytuje wszystkie pliki z podanej do konstruktora sciezki folderu.
+	 * 
+	 * {@inheritDoc}
+	 * 
+	 * @return lista obiektow klasy Crossword z folderu o sciezce podanej do konstruktora
 	 */
 	@Override
-	public LinkedList<Crossword> getAllCws() throws IOException, WordNotFoundException {
-		// TODO Auto-generated method stub
-		/*File folder = new File(sciezka);
-		File[] pliki = folder.listFiles();
-		for (File plik : pliki) {
-		    if (plik.isFile()) {
-		    	InteliCwDB db = new InteliCwDB("cwdb.txt");
-		    	Crossword cw = new Crossword(Long.parseLong(plik.getName()));
-		    	cw.setCwDB(db);
-		    	Scanner p = new Scanner(new FileInputStream(plik));
-		    	String[] linia = p.nextLine().split(" ");
-		    	int height = Integer.parseInt(linia[0]);
-		    	int width = Integer.parseInt(linia[1]);
-		    	Board b = new Board(width, height);
-		    	cw.setBoard(b);
-		    	Strategy s;
-		    	if (linia[2].equals("true")) s = new SimpleStrategy();
-		    	else s = new ComplicatedStrategy();
-		    	while (p.hasNext()) {
-		    		String[] liniaWyraz = p.nextLine().split(" ");
-		    		Entry e = db.get(liniaWyraz[0]);
-		    		boolean horizontal=false;
-		    		if (liniaWyraz[1].equals(Direction.HORIZ)) horizontal=true;
-		    		int x = Integer.parseInt(liniaWyraz[2]);
-		    		int y = Integer.parseInt(liniaWyraz[3]);
-		    		CwEntry cwe;
-		    		if (horizontal) cwe = new CwEntry(e.getWord(), e.getClue(), Direction.HORIZ, x, y);
-		    		else cwe = new CwEntry(e.getWord(), e.getClue(), Direction.VERT, x, y);
-		    		cw.addCwEntry(cwe, s);
-		    	}
-		    	crosswords.addCrossword(cw);
-		    	p.close();
-		    }
-		}*/
+	public LinkedList<Crossword> getAllCws() throws IOException, ClassNotFoundException {
 		LinkedList<Crossword> list = new LinkedList<Crossword>();
-		try
-	    {
 			File folder = new File(sciezka);
 			File[] pliki = folder.listFiles();
 			for (File plik : pliki) {
 				if (plik.isFile()) {
 					FileInputStream fileIn = new FileInputStream(plik);
-					ObjectInputStream in = new ObjectInputStream(fileIn);
-					list.add((Crossword) in.readObject());
-					in.close();
+					list.add(readSerializedFile(fileIn));
 					fileIn.close();
 				}
-			return list;
 			}    
-	    } catch(IOException i)
-	    {
-	       i.printStackTrace();
-	       return null;
-	    }catch(ClassNotFoundException c)
-	    {
-	       System.out.println("Employee class not found");
-	        c.printStackTrace();
-	        return null;
-	    }
 		return list;
 	}
 	
-	public Crossword getCrossword() {
+	/**
+	 * Metoda uzywana do odczytania pojedynczego pliku z krzyzowka
+	 * 
+	 * @return obiekt klasy Crossword z pliku o nazwie podanej do konstruktora
+	 * @throws ClassNotFoundException
+	 * @throws IOException
+	 */
+	public Crossword getCrossword() throws ClassNotFoundException, IOException {
 		Crossword cw = null;
-		try
-	    {
-	       FileInputStream fileIn = new FileInputStream(sciezka);
-	       ObjectInputStream in = new ObjectInputStream(fileIn);
-	       cw = (Crossword) in.readObject();
+		FileInputStream fileIn = new FileInputStream(sciezka);
+	    cw = readSerializedFile(fileIn);
+	    fileIn.close();
+	    return cw;
+	}
+	
+	/**
+	 * Metoda zajmujaca sie obsluga wczytywania serializowanego obiektu z pliku
+	 * 
+	 * @param f Strumien pliku z ktorego odczytywana bedzie klasa Crossword
+	 * @return wczytany z pliku obiekt klasy Crossword
+	 * @throws IOException
+	 * @throws ClassNotFoundException
+	 */
+	private Crossword readSerializedFile(FileInputStream f) throws IOException, ClassNotFoundException {
+	       ObjectInputStream in = new ObjectInputStream(f);
+	       Crossword cw = (Crossword) in.readObject();
 	       in.close();
-	       fileIn.close();
 	       return cw;
-	    }catch(IOException i)
-	    {
-	       i.printStackTrace();
-	       return null;
-	    }catch(ClassNotFoundException c)
-	    {
-	       System.out.println("Employee class not found");
-	        c.printStackTrace();
-	        return null;
-	    }
 	}
 
 }

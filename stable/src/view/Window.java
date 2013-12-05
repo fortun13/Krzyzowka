@@ -12,12 +12,20 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
+
 import java.awt.Color;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JList;
 import javax.swing.ListSelectionModel;
+import javax.swing.LookAndFeel;
+import javax.swing.UIManager;
+import javax.swing.JLabel;
+import javax.swing.SwingConstants;
+import javax.swing.BoxLayout;
+import java.awt.FlowLayout;
+import java.awt.Component;
 
 /**
  * @author Jakub Fortunka
@@ -30,17 +38,45 @@ public class Window extends JFrame {
 	 */
 	private static final long serialVersionUID = -3493604451193932925L;
 	
+	/**
+	 * glowny panel programu
+	 */
 	private JPanel contentPane;
+	/**
+	 * obiekt klasy {@link CwBrowser} zarzadzajacy krzyzowkami
+	 */
 	private CwBrowser crosswords;
+	/**
+	 * Panel klasy {@link CrosswordPanel} w ktorym znajduje sie wyswietlana krzyzowka
+	 */
 	private CrosswordPanel crosswordPanel;
+	/**
+	 * Panel {@link JPanel} w ktorym znajduja sie podpowiedzi do hasel
+	 */
 	private JPanel cluePanel;
-	private JTextArea textArea;
+	/**
+	 * {@link JTextArea} w ktorym znajduja sie podpowiedzi do hasel
+	 */
+	private JTextArea clueTextArea;
+	/**
+	 * Panel do otoczenia listy krzyzowek
+	 */
 	private JPanel listPanel;
+	/**
+	 * Lista wszystkich mozliwych do wyswietlenia krzyzowek
+	 */
 	private JList<String> cwList;
+	/**
+	 * Panel otaczajacy {@link #listPanel} dzieki ktoremu przy malym rozmiarze pojawia sie paski do przewijania
+	 */
 	private JScrollPane scrollPane;
+	/**
+	 * Label do listy krzyzowek (zeby ladnie wygladalo)
+	 */
+	private JLabel listLabel;
 
 	/**
-	 * Launch the application.
+	 * main - odpala aplikacje
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -56,7 +92,7 @@ public class Window extends JFrame {
 	}
 
 	/**
-	 * Create the frame.
+	 * Konstruktor tworzacy glowne okno. Tworzy rowniez wszystkie potrzebne panele.
 	 */
 	public Window() {
 		setTitle("Program do generowania krzyzowek");
@@ -68,8 +104,8 @@ public class Window extends JFrame {
 		setContentPane(contentPane);
 		
 		crosswordPanel = new CrosswordPanel();
-		crosswordPanel.setBackground(Color.GRAY);
-		crosswordPanel.setBorder(new LineBorder(Color.black));
+		crosswordPanel.setBackground(new Color(211, 211, 211));
+		crosswordPanel.setBorder(null);
 		contentPane.add(crosswordPanel, BorderLayout.CENTER);
 		
 		
@@ -77,13 +113,14 @@ public class Window extends JFrame {
 		cluePanel.setBackground(Color.WHITE);
 		contentPane.add(cluePanel, BorderLayout.SOUTH);
 		
-		textArea = new JTextArea();
-		textArea.setBackground(Color.WHITE);
-		textArea.setEditable(false);
-		cluePanel.add(textArea);
+		clueTextArea = new JTextArea();
+		clueTextArea.setBackground(Color.WHITE);
+		clueTextArea.setEditable(false);
+		cluePanel.add(clueTextArea);
 		
 		listPanel = new JPanel();
 		contentPane.add(listPanel, BorderLayout.WEST);
+		listPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
 		scrollPane = new JScrollPane();
 		listPanel.add(scrollPane);
@@ -93,23 +130,23 @@ public class Window extends JFrame {
 		cwList.setVisibleRowCount(10);
 		cwList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-		OptionPanel optionPanel = new OptionPanel(crosswordPanel,this,textArea,cwList);
+		OptionPanel optionPanel = new OptionPanel(crosswordPanel,this,clueTextArea,cwList);
+		
+		listLabel = new JLabel("Krzy\u017C\u00F3wki");
+		listLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		scrollPane.setColumnHeaderView(listLabel);
 		contentPane.add(optionPanel, BorderLayout.NORTH);
-		
-		//textArea.setText("Test");
-		
-		
 	}
 
 	/**
-	 * @return the crosswords
+	 * @return obiekt {@link CwBrowser} zarzadzajacy krzyzowkami
 	 */
 	public CwBrowser getCrosswords() {
 		return crosswords;
 	}
 
 	/**
-	 * @return the contentPane
+	 * @return glowny panel programu
 	 */
 	public JPanel getContentPane() {
 		return contentPane;

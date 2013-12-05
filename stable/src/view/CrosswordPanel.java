@@ -3,31 +3,39 @@
  */
 package view;
 
+import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
 import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.FlowLayout;
+
 import javax.swing.JTable;
-import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
 /**
+ * Klasa reprezentujaca panel w ktorym rysowana jest krzyzowka. Znajduje sie tutaj metoda odpowiedzialna za narysowanie krzyzowki
+ * 
  * @author Jakub Fortunka
- *
+ * @version 1.0
  */
 public class CrosswordPanel extends JPanel {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 3962127721455796203L;
 	
+	/**
+	 * tabela ktora reprezentuje krzyzowke
+	 */
 	private JTable table;
+	/**
+	 * model tabeli - zapewnia m.in. dynamiczny rozmiar krzyzowki
+	 */
 	private DefaultTableModel tableModel;
-	//private MyTableModel tableModel;
 	
 	/**
+	 * zwraca model krzyzowki
 	 * @return the tableModel
 	 */
 	public DefaultTableModel getTableModel() {
@@ -35,45 +43,45 @@ public class CrosswordPanel extends JPanel {
 	}
 
 	/**
-	 * Create the panel.
+	 * Kontruktor panelu. Tworzy tabele oraz model tabeli
 	 */
 	public CrosswordPanel() {
 		super();
 		setBackground(Color.LIGHT_GRAY);
 		tableModel = new DefaultTableModel(new Object[]{},0);
-		//tableModel = new MyTableModel();
         setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
         table = new JTable();
+        table.setShowVerticalLines(false);
+        table.setShowHorizontalLines(false);
         add(table);
         table.setBackground(Color.LIGHT_GRAY);
         table.setModel(tableModel);
-        MyTableCellRenderer centerRenderer = new MyTableCellRenderer();
-        table.setDefaultRenderer(String.class, centerRenderer);
+        
+        table.setShowGrid(false);
+        table.setBorder(BorderFactory.createEmptyBorder());
 
 	}
 	
 	/**
-	 * @param tableModel the tableModel to set
+	 * Ustawia tableModel dla wykorzystywanej tabeli
+	 * 
+	 * @param tableModel model tabeli do ustawienia 
 	 */
 	public void setTableModel(DefaultTableModel tableModel) {
 		this.tableModel = tableModel;
 		table.setModel(this.tableModel);
 	}
 
-	@Override
-	public void paint(Graphics g) {
-		super.paint(g);
-		//g.drawString("Testowy String", 20, 20);
-	}
 	
-	public void paint2() {
-		this.getGraphics();
-		//table.addColumn("KolumnaTestowa");
-		//super.paint(g);
-		//table.setOpaque(true);
+	/**
+	 * Metoda zajmujaca sie "namalowaniem" krzyzowki w panelu
+	 * 
+	 * @param e tablica dlugosci kolejnych wpisow krzyzowki
+	 */
+	public void paint2(int[] e) {
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-		UIManager.getColor("Table.gridColor");
-	new MyTableCellRenderer();
+		MyTableCellRenderer r = new MyTableCellRenderer(e);
+		table.setDefaultRenderer(Object.class, r);
 		
 		for (int i=0;i<tableModel.getColumnCount();i++) {
 			TableColumn a = table.getColumnModel().getColumn(i);
@@ -81,6 +89,5 @@ public class CrosswordPanel extends JPanel {
 			table.setRowHeight(40);
 		}
         super.repaint();
-		//g.drawString("Testowy String", 50, 50);
 	}
 }

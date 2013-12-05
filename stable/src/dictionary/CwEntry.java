@@ -6,20 +6,40 @@ package dictionary;
 import java.io.Serializable;
 
 /**
+ * Klasa dziedziczaca po klasie Entry. Rozszerza jej funkcjonalnosc o informacje na temat polozenia na krzyzowce.
+ * (posiada informacje o polozeniu (x,y), oraz o tym, w jaki sposob wyraz jest polozony (horyzontalnie czy wertykalnie))
+ * 
  * @author Jakub Fortunka
- *
+ * @version 1.0
+ * @see Entry
+ * 
  */
 public class CwEntry extends Entry implements Serializable {
 
 	/**
+	 * pole potrzebne do serializacji obiektu tej klasy
 	 * 
-	 */
+	*/
 	private static final long serialVersionUID = -6258824129283325212L;
 	
+	/**
+	 * wspolrzedna x pierwszego znaku wyrazu
+	 *  
+	 */
+	
+	/**
+	 * wspolrzedna y pierwszego znaku wyrazu
+	 */
 	private int x,y;
+	/**
+	 * Polozenie wyrazu (HORIZ lub VERT) 
+	 * @see Direction
+	 */
 	private Direction d;
 	
 	/**
+	 * Kontruktor klasy
+	 * 
 	 * @param _word slowo do wprowadzenia
 	 * @param _clue podpowiedz do slowa
 	 */
@@ -32,21 +52,25 @@ public class CwEntry extends Entry implements Serializable {
 	}
 
 	/**
-	 * @return zwraca wartosc x (polozenie na osi OX)
+	 * Zwraca wsp. x wpisu
+	 * @return wartosc x (polozenie na osi OX)
 	 */
 	public int getX() {
 		return x;
 	}
 
 	/**
-	 * @return zwraca wartosc y (polozenie na osi OY)
+	 * Zwraca wsp. y wpisu
+	 * @return wartosc y (polozenie na osi OY)
 	 */
 	public int getY() {
 		return y;
 	}
 
 	/**
-	 * @return zwraca rodzaj polozenia (czy haslo ma byc ulozone poziomo czy pionowo) (HORIZ albo VERT)
+	 * Zwraca sposob polozenia wpisu
+	 * @see Direction
+	 * @return rodzaj polozenia (czy haslo ma byc ulozone poziomo czy pionowo) (HORIZ albo VERT)
 	 */
 	public Direction getD() {
 		return d;

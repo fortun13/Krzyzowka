@@ -6,12 +6,15 @@ package view;
 import java.awt.Color;
 import java.awt.Component;
 
+import javax.swing.BorderFactory;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 
 /**
+ * Klasa zastepujaca domyslny renderer dla komorek tabeli. Dzieki temu pola do wypelnienia sa ladnie zaznaczone :)
+ * 
  * @author Jakub Fortunka
- *
+ * @version 1.0
  */
 public class MyTableCellRenderer extends DefaultTableCellRenderer {
 
@@ -20,36 +23,34 @@ public class MyTableCellRenderer extends DefaultTableCellRenderer {
 	 */
 	private static final long serialVersionUID = -6996892836291668555L;
 	/**
-	 * 
+	 * kolejne dlugosci wpisow krzyzowki
 	 */
 	
-	boolean isBordered = true;
+	int[] entries;
 	
-	public MyTableCellRenderer() {
-		// TODO Auto-generated constructor stub
+	/**
+	 * Konstruktor klasy do renderowania komorek tabeli
+	 * @param e tablica z dlugosciami kolejnych wpisow krzyzowki
+	 */
+	public MyTableCellRenderer(int[] e) {
 		super();
-		//setVerticalAlignment(CENTER);
-		//setHorizontalAlignment(LEFT);
-        //Color color = UIManager.getColor("Table.gridColor");
-        //setBorder(new MatteBorder(2,2,2,2,color));
+        setOpaque(true);
+        entries=e;
 	}
 	
+	/**
+	 * Metoda w ktorej ustawiane sa odpowiednie kolory i obramowanie komorek krzyzowki.
+	 * 
+	 * {@inheritDoc}
+	 */
 	@Override
     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-		setForeground(Color.WHITE);
-        setVerticalAlignment(CENTER);
-        setHorizontalAlignment(CENTER);
-        setHorizontalTextPosition(CENTER);
-        super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column); 
-    //    Color color = UIManager.getColor("Table.gridColor");
-    //    setBorder(new MatteBorder(2,2,2,2,color));
-      //  setBorder(new LineBorder(Color.RED));
-        //setBackground(Color.red);
-        
-        
-        
-      //  setForeground(Color.black);
-        return this;
+		super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+		if (entries[row]>column-1) setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, Color.BLACK));
+		else setBorder(BorderFactory.createEmptyBorder());
+		setBackground(Color.WHITE);
+		setHorizontalAlignment(CENTER);
+		return this;
     }
 	
 	

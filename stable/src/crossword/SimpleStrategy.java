@@ -11,22 +11,26 @@ import dictionary.CwEntry;
 import dictionary.Direction;
 
 /**
+ * Implementacja interfejsu strategii - jest to strategia prosta, wyrazy sie nie przecinaja
+ * 
  * @author Jakub Fortunka
- *
+ * @version 1.0
+ * @see Strategy
  */
 public class SimpleStrategy extends Strategy {
 	
-	/* (non-Javadoc)
-	 * @see crossword.Strategy#findEntry(crossword.Crossword)
+	/**
+	 * Implementacja metody do znajdowania hasel mozliwych do wpisania w krzyzowke.
+	 * Metoda jest prosta - hasla sie nie przecinaja
+	 * 
+	 * {@inheritDoc}
+	 * 
 	 */
 	
 	@Override
 	public CwEntry findEntry(Crossword cw) throws WordNotFoundException {
 		Iterator<CwEntry> it = cw.getROEntryIter();
 		if (!it.hasNext()) {
-			//Random rnd = new Random();
-			//int r = rnd.nextInt(7)+2;
-			//Entry n = cw.getCwDB().getRandom();
 			Entry n = cw.getCwDB().getRandom(cw.getBoardCopy().getHeight());
 			CwEntry haslo = new CwEntry(n.getWord(),n.getClue(),Direction.VERT,0,0);
 			return haslo;
@@ -49,15 +53,19 @@ public class SimpleStrategy extends Strategy {
 				pat = cw.getBoardCopy().createPattern(first.getX(), first.getY()+i, los, first.getY()+i);
 				e = cw.getCwDB().getRandom(pat);
 				licznik++;
-				if (licznik>300) System.exit(0);
+				if (licznik>300) throw new WordNotFoundException("Nie znaleziono wyrazu");
+				if (cw.contains(e.getWord())) e=null;
 			}
 			CwEntry haslo = new CwEntry(e.getWord(),e.getClue(),Direction.HORIZ,0,i);
 			return haslo;
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see crossword.Strategy#updateBoard(crossword.Board, dictionary.CwEntry)
+	/**
+	 * Implementacja metody do aktualizowania zawartosci tablicy
+	 * 
+	 * {@inheritDoc}
+	 * 
 	 */
 	@Override
 	public void updateBoard(Board b, CwEntry e) {

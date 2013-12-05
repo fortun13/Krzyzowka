@@ -9,28 +9,59 @@ import java.io.Serializable;
  * Klasa ktora reprezentuje jedna komorke krzyzowki
  * 
  * @author Jakub Fortunka
+ * @version 1.0
  *
  */
+
 public class BoardCell implements Serializable{
 
 	/**
 	 * 
+	 * 
+	 * serialVersionUID - pole potrzebne do serializacji obiektu 
+	 * @see Serializable
 	 */
+	
 	private static final long serialVersionUID = -1205507291299789208L;
 	
-	String content="";
-	boolean canHorizStart,canHorizIn,canHorizEnd;
-	boolean canVertiStart,canVertiIn,canVertiEnd;
 	/**
+	 * zawartosc jednej komorki
+	 */
+	String content="";
+	/**
+	 * czy komorka moze rozpoczynac nowe haslo w poziomie
+	 */
+	/**
+	 * czy komorka moze byc czescia nowego hasla w poziomie
+	 */
+	/**
+	 * czy komorka moze konczyc nowe haslo w poziomie
+	 */
+	boolean canHorizStart,canHorizIn,canHorizEnd;
+	/**
+	 * czy komorka moze rozpoczynac nowe haslo w pionie
+	 */
+	/**
+	 * czy komorka moze byc czescia nowego haslo w pionie
+	 */
+	/**
+	 * czy komorka moze konczyc nowe haslo w pionie
+	 */
+	boolean canVertiStart,canVertiIn,canVertiEnd;
+
+	/**
+	 * Kontruktor domyslny. Wypelnia komorke pustym stringiem, i ustawia wszystkie opcje wykorzystania na true
 	 * 
 	 */
 	public BoardCell() {
-		// TODO Auto-generated constructor stub
 		content="";
 		canHorizEnd=canHorizIn=canHorizStart=canVertiEnd=canVertiIn=canVertiStart=true;
 	}
 
 	/**
+	 * Metoda ustawiajaca mozliwosc komorki co do tego czy moze zaczynac/konczyc/byc czescia nowego hasla
+	 * (metoda nieskonczona, przy prostym algorytmie generowanie krzyzowki i tak sie nie przydaje)
+	 * 
 	 * @param x polozenie komorki "na osi" ox
 	 * @param y polozenie komorki "na osi" oy
 	 * @param b tablica z komorkami
@@ -94,12 +125,17 @@ public class BoardCell implements Serializable{
 	}
 	
 	/**
+	 * ustawia zawartosc komorki
+	 * 
 	 * @param _content zawartosc, ktora ma byc wpisana do komorki
 	 */
 	public void setContent(String _content) {
 		content=_content;
 	}
 	
+	/**
+	 * @return zawartosc komorki
+	 */
 	public String getContent() {
 		return content;
 	}

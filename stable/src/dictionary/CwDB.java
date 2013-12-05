@@ -21,15 +21,19 @@ import java.util.Scanner;
  * Moze wyrzucac wyjatek FileNotFoundException.
  * 
  * @author Jakub Fortunka
+ * @version 1.0
  *
  */
 public class CwDB implements Serializable {
 
 	/**
-	 * 
+	 * pole niezbedne do serializacji obiektu klasy
 	 */
 	private static final long serialVersionUID = -1855598157340500387L;
 	
+	/**
+	 * Lista {@link Entry} w ktorej przechowywane sa wszystkie hasla z ktorych bedziemy korzystac do tworzenia krzyzowek
+	 */
 	protected LinkedList<Entry> dict = new LinkedList<Entry>();
 	
 	/**
@@ -38,11 +42,13 @@ public class CwDB implements Serializable {
 	 * @param filename sciezka do pliku z danymi do slownika
 	 * @throws FileNotFoundException
 	 */
-	public CwDB(String filename) {
+	public CwDB(String filename) throws FileNotFoundException {
 		this.createDB(filename);
 	}
 
 	/**
+	 * dodaje slowo do slownika
+	 * 
 	 * @param word slowo ktore ma byc wprowadzone do slownika
 	 * @param clue podpowiedz do wprowadzanego slowa
 	 */
@@ -59,7 +65,7 @@ public class CwDB implements Serializable {
 	 */
 	public Entry get(String word) throws WordNotFoundException {
 		for (Entry el : dict) 	if (el.getWord().equals(word)) return el;
-		throw new WordNotFoundException();
+		throw new WordNotFoundException("Nie znaleziono slowa");
 	}
 	
 	/**
@@ -93,6 +99,8 @@ public class CwDB implements Serializable {
 	}
 	
 	/**
+	 * zwraca wielkosc slownika
+	 * 
 	 * @return zwraca obecna wielkosc slownika
 	 */
 	public int getSize()	{
@@ -100,10 +108,12 @@ public class CwDB implements Serializable {
 	}
 	
 	/**
+	 * tworzy baze hasel z podanego pliku
+	 * 
 	 * @param filename sciezka do pliku zawierajacego dane dla slownika
 	 * @throws FileNotFoundException
 	 */
-	protected void createDB(String filename) {
+	protected void createDB(String filename) throws FileNotFoundException {
 		try {
 			Scanner plik;
 			plik = new Scanner(new FileInputStream(filename));
@@ -115,8 +125,7 @@ public class CwDB implements Serializable {
 			}
 			plik.close();
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw e;
 		}
 		
 	}

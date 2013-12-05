@@ -11,8 +11,10 @@ import dictionary.Direction;
 import dictionary.Entry;
 
 /**
+ * Nie zaimplementowana klasa generujaca skomplikowana wersje krzyzowki (krzyzojaco sie)
+ * 
  * @author Jakub Fortunka
- *
+ * @version 0.1
  */
 public class ComplicatedStrategy extends Strategy {
 

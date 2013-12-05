@@ -19,10 +19,13 @@ import java.util.Random;
  * zachowala kolejnosc alfabetyczna
  * 
  * @author Jakub Fortunka
+ * @version 1.0
+ * @see CwDB
  *
  */
 public class InteliCwDB extends CwDB implements Serializable {	
 	/**
+	 * Pole potrzebne do wykonywania serializacji.
 	 * 
 	 */
 	private static final long serialVersionUID = -2705552648337775200L;
@@ -30,17 +33,21 @@ public class InteliCwDB extends CwDB implements Serializable {
 	/**
 	 * Konstruktor korzysta z konstruktora klasy bazowej.
 	 * 
+	 * 
+	 * @see CwDB
 	 * @param filename sciezka do pliku z danymi do slownika
 	 * @throws FileNotFoundException
 	 */
-	public InteliCwDB(String filename) {
+	public InteliCwDB(String filename) throws FileNotFoundException {
 		super(filename);
 		// TODO Auto-generated constructor stub
 	}
 	
 	/**
+	 * Metoda wyszukuje wszystkie wpisy w slowniku, ktore pasuja do podanego wyrazenia regularnego
+	 * 
 	 * @param pattern wyrazenie regularne wedlug ktorego maja byc znalezione wyrazy
-	 * @return zwraca LinkedList<Entry> zawierajaca wszystkie wyrazy odpowiadajace podanemu wyrazeniu regularnemu
+	 * @return LinkedList<{@link Entry}> zawierajaca wszystkie wyrazy odpowiadajace podanemu wyrazeniu regularnemu
 	 */
 	public LinkedList<Entry> findAll(String pattern) {
 		LinkedList<Entry> list = new LinkedList<Entry>();
@@ -51,7 +58,9 @@ public class InteliCwDB extends CwDB implements Serializable {
 	}
 
 	/**
-	 * @return zwraca losowy wyraz ze slownika
+	 * Metoda zwraca (pseudo)losowy wyraz ze slownika
+	 * 
+	 * @return losowy wyraz ze slownika
 	 */
 	public Entry getRandom()	{
 		int wielkosc = this.dict.size();
@@ -60,47 +69,31 @@ public class InteliCwDB extends CwDB implements Serializable {
 	}
 	
 	/**
+	 * Metoda wyszukuje i zwraca losowy wyraz (jednak o okreslonej dlugosci) ze slownika
+	 * 
 	 * @param length dlugosc wyrazu, ktory ma zostac wylosowany
-	 * @return zwraca losowy wyraz o okreslonej dlugosci
+	 * @return losowy wyraz o okreslonej dlugosci
 	 * @throws WordNotFoundException
 	 */
 	public Entry getRandom(int length) throws WordNotFoundException	{
-		/*int size = this.getSize();
-		int counter = 0;
-		Random rnd = new Random();
-		int losowa = rnd.nextInt(dict.size());
-		while(counter<size){
-			if (dict.get(losowa).getWord().length()==length) return dict.get(losowa);
-			else losowa = rnd.nextInt(dict.size());
-			counter++;
-		}
-		throw new WordNotFoundException()*/
 		String pat = "^";
 		for (int i=0;i<length;i++) pat+=".";
 		pat+="$";
 		LinkedList<Entry> lista = findAll(pat);
-		if (lista.isEmpty()) throw new WordNotFoundException();
+		if (lista.isEmpty()) throw new WordNotFoundException("Nie znaleziono slowa");
 		Random rnd = new Random();
 		return lista.get(rnd.nextInt(lista.size()));
 	}
 	
 	/**
+	 * Metoda wyszukuje w slowniku i zwraca losowy wyraz, ktory pasuje do podanego wyrazenia regularnego
+	 * 
 	 * @param pattern wyrazenie regularne dla ktorego chcemy znalezc wyraz
-	 * @return zwraca wyraz odpowiadajacy podanego wyrazeniu regularnemu
+	 * @return wyraz odpowiadajacy podanego wyrazeniu regularnemu, jezeli nie znajdzie, zwraca null
 	 * @throws WordNotFoundException
 	 */
 	public Entry getRandom(String pattern) throws WordNotFoundException {
-		/*int size = this.getSize();
-		int counter = 0;
-		Entry e = this.getRandom();
-		while(counter<size) {
-			if (e.getWord().matches(pattern)) return e;
-			e = this.getRandom();
-			counter++;
-		}
-		throw new WordNotFoundException();*/
 		LinkedList<Entry> lista = findAll(pattern);
-		//if (lista.isEmpty()) throw new WordNotFoundException();
 		if (lista.isEmpty()) return null;
 		Random rnd = new Random();
 		return lista.get(rnd.nextInt(lista.size()));

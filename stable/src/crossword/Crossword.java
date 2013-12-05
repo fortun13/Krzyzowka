@@ -16,29 +16,44 @@ import dictionary.InteliCwDB;
  * Klasa reprezentujaca krzyzowke, zapewniajaca metode do generowania krzyzowek
  * 
  * @author Jakub Fortunka
- *
+ * @version 1.0
  */
 public class Crossword implements Serializable {
 
 	/**
-	 * 
+	 * zmienna potrzebna do serializacji obiektu krzyzowki
 	 */
 	private static final long serialVersionUID = -5777932156704852796L;
 	
-	private LinkedList<CwEntry> entries = new LinkedList<CwEntry>();
-	private Board b;
-	private InteliCwDB cwdb;
-	private final long ID;
 	/**
-	 * 
+	 * Lista {@link CwEntry} przechowujaca wszystkie wpisy znajdujace sie w tej krzyzowce
+	 */
+	private LinkedList<CwEntry> entries = new LinkedList<CwEntry>();
+	/**
+	 * plansza krzyzowki
+	 * @see Board
+	 */
+	private Board b;
+	/**
+	 * baza hasel sluzacych do generowania krzyzowki
+	 * @see InteliCwDB
+	 */
+	private InteliCwDB cwdb;
+	/**
+	 * numer krzyzowki (przy zapisywaniu jest nadawany, domyslnie ustawiony na -1)
+	 */
+	private final long ID;
+	
+	/**
+	 * Kontruktor domyslny. Ustawia ID na -1; wywoluje konstruktor {@link Board}
 	 */
 	public Crossword() {
-		// TODO Auto-generated constructor stub
 		ID=-1;
 		b = new Board();
 	}
 	
 	/**
+	 * Kontruktor ustawiajacy id krzyzowki
 	 * @param id numer krzyzowki
 	 */
 	public Crossword(long id) {
@@ -46,6 +61,8 @@ public class Crossword implements Serializable {
 	}
 	
 	/**
+	 * Konstruktor ktory wczytuje slownik hasel z pliku
+	 * 
 	 * @param file z jakiego pliku ma zostac utworzona baza hasel
 	 * @param id numer krzyzowki
 	 * @throws FileNotFoundException
@@ -57,23 +74,33 @@ public class Crossword implements Serializable {
 	}
 
 	/**
-	 * @return zwraca iterator po wpisach krzyzowki, ktory nie moze usuwac wpisow z krzyzowki
+	 * tworzy iterator RO (Read Only)
+	 * 
+	 * @return iterator po wpisach krzyzowki, ktory nie moze usuwac wpisow z krzyzowki
 	 */
 	public Iterator<CwEntry> getROEntryIter() {
-		//Iterator<CwEntry> it = Collections.unmodifiableCollection(entries).iterator();
-		//return it;
-		//return Collections.unmodifiableCollection(entries).iterator();
 		return Collections.unmodifiableList(entries).iterator();
 	}
 	
 	/**
+	 * Tworzy kopie tablicy i ja zwraca
+	 * @see Board
 	 * @return metoda zwraca kopie "tablicy" (czyli calej krzyzowki)
 	 */
 	public Board getBoardCopy() {
-		return b;
+		//return b;
+		Board board = new Board(b.getWidth(),b.getHeight());
+		for (int i=0;i<board.getHeight();i++) {
+			for (int j=0;j<board.getWidth();j++) {
+				board.setCell(j, i, b.getCell(j, i));
+			}
+		}
+		return board;
 	}
 	
 	/**
+	 * zwraca baze hasel
+	 * @see InteliCwDB
 	 * @return metoda zwraca baze hasel
 	 */
 	public InteliCwDB getCwDB() {
@@ -84,8 +111,9 @@ public class Crossword implements Serializable {
 	 * Metoda ustawia baze hasel dla krzyzowki
 	 * 
 	 * @param cwdb baza hasel do przypisania
+	 * @throws FileNotFoundException rzucany gdy nie znaleziono pliku
 	 */
-	public void setCwDB(InteliCwDB cwdb) {
+	public void setCwDB(InteliCwDB cwdb) throws FileNotFoundException {
 		InteliCwDB cwDB = null;
 		if (cwdb==null) 	cwDB = new InteliCwDB("cwdb.txt");
 		else cwDB = cwdb;
@@ -93,6 +121,8 @@ public class Crossword implements Serializable {
 	}
 	
 	/**
+	 * metoda ustawia plansze na ta zadana parametrem
+	 * 
 	 * @param b plansza reprezentujaca krzyzowke
 	 */
 	public void setBoard (Board b) {
@@ -100,6 +130,8 @@ public class Crossword implements Serializable {
 	}
 	
 	/**
+	 * Metoda sprawdza czy podane slowo zostalo juz uzyte w krzyzowce
+	 * 
 	 * @param word slowo do sprawdzenia
 	 * @return true jesli slowo zawiera sie w krzyzowce (znajduje sie w entries); false jesli go tam nie ma
 	 */
@@ -111,6 +143,7 @@ public class Crossword implements Serializable {
 	}
 	
 	/**
+	 * Dodaje wpis do krzyzowki
 	 * @param cwe Wpis z bazy hasel
 	 * @param s wybrana strategia (SimpleStrategy badz ComplicatedStrategy)
 	 */
