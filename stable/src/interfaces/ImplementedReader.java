@@ -7,10 +7,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.util.Scanner;
-
+import java.util.LinkedList;
 import crossword.*;
-import dictionary.*;
 
 /**
  * Klasa implementujaca interfejs Reader.
@@ -37,7 +35,7 @@ public class ImplementedReader implements Reader {
 	 * @see interfaces.Reader#getAllCws()
 	 */
 	@Override
-	public Crossword getAllCws() throws IOException, WordNotFoundException {
+	public LinkedList<Crossword> getAllCws() throws IOException, WordNotFoundException {
 		// TODO Auto-generated method stub
 		/*File folder = new File(sciezka);
 		File[] pliki = folder.listFiles();
@@ -71,6 +69,35 @@ public class ImplementedReader implements Reader {
 		    	p.close();
 		    }
 		}*/
+		LinkedList<Crossword> list = new LinkedList<Crossword>();
+		try
+	    {
+			File folder = new File(sciezka);
+			File[] pliki = folder.listFiles();
+			for (File plik : pliki) {
+				if (plik.isFile()) {
+					FileInputStream fileIn = new FileInputStream(plik);
+					ObjectInputStream in = new ObjectInputStream(fileIn);
+					list.add((Crossword) in.readObject());
+					in.close();
+					fileIn.close();
+				}
+			return list;
+			}    
+	    } catch(IOException i)
+	    {
+	       i.printStackTrace();
+	       return null;
+	    }catch(ClassNotFoundException c)
+	    {
+	       System.out.println("Employee class not found");
+	        c.printStackTrace();
+	        return null;
+	    }
+		return list;
+	}
+	
+	public Crossword getCrossword() {
 		Crossword cw = null;
 		try
 	    {
@@ -90,7 +117,6 @@ public class ImplementedReader implements Reader {
 	        c.printStackTrace();
 	        return null;
 	    }
-		
 	}
 
 }

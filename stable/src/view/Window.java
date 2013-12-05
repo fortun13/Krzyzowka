@@ -8,25 +8,16 @@ import interfaces.CwBrowser;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
-import javax.swing.JButton;
-
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.Color;
 
-import javax.swing.JToolBar;
-import javax.swing.JMenuBar;
-import javax.swing.JTextPane;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.UIManager;
+import javax.swing.JList;
+import javax.swing.ListSelectionModel;
 
 /**
  * @author Jakub Fortunka
@@ -34,11 +25,19 @@ import javax.swing.UIManager;
  */
 public class Window extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3493604451193932925L;
+	
 	private JPanel contentPane;
 	private CwBrowser crosswords;
 	private CrosswordPanel crosswordPanel;
 	private JPanel cluePanel;
 	private JTextArea textArea;
+	private JPanel listPanel;
+	private JList<String> cwList;
+	private JScrollPane scrollPane;
 
 	/**
 	 * Launch the application.
@@ -83,7 +82,18 @@ public class Window extends JFrame {
 		textArea.setEditable(false);
 		cluePanel.add(textArea);
 		
-		OptionPanel optionPanel = new OptionPanel(crosswordPanel,this,textArea);
+		listPanel = new JPanel();
+		contentPane.add(listPanel, BorderLayout.WEST);
+		
+		scrollPane = new JScrollPane();
+		listPanel.add(scrollPane);
+		
+		cwList = new JList<String>();
+		scrollPane.setViewportView(cwList);
+		cwList.setVisibleRowCount(10);
+		cwList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+		OptionPanel optionPanel = new OptionPanel(crosswordPanel,this,textArea,cwList);
 		contentPane.add(optionPanel, BorderLayout.NORTH);
 		
 		//textArea.setText("Test");

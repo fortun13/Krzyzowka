@@ -5,39 +5,24 @@ package view;
 
 import javax.swing.JPanel;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.GridBagLayout;
-
-import javax.swing.JLabel;
-
-import com.jgoodies.forms.factories.DefaultComponentFactory;
-
-import java.awt.GridBagConstraints;
 import java.awt.FlowLayout;
-import java.awt.CardLayout;
-
-import javax.swing.BoxLayout;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
 import javax.swing.JTable;
 import javax.swing.UIManager;
-import javax.swing.border.LineBorder;
-import javax.swing.border.MatteBorder;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
-
-import java.awt.GridLayout;
-
-import javax.swing.JScrollPane;
 
 /**
  * @author Jakub Fortunka
  *
  */
 public class CrosswordPanel extends JPanel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3962127721455796203L;
+	
 	private JTable table;
 	private DefaultTableModel tableModel;
 	//private MyTableModel tableModel;
@@ -62,6 +47,8 @@ public class CrosswordPanel extends JPanel {
         add(table);
         table.setBackground(Color.LIGHT_GRAY);
         table.setModel(tableModel);
+        MyTableCellRenderer centerRenderer = new MyTableCellRenderer();
+        table.setDefaultRenderer(String.class, centerRenderer);
 
 	}
 	
@@ -80,21 +67,13 @@ public class CrosswordPanel extends JPanel {
 	}
 	
 	public void paint2() {
-		Graphics g = this.getGraphics();
+		this.getGraphics();
 		//table.addColumn("KolumnaTestowa");
 		//super.paint(g);
 		//table.setOpaque(true);
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-		Color color = UIManager.getColor("Table.gridColor");
-	//	MatteBorder border = new MatteBorder(2, 2, 2, 2, color);
-	//	table.setBorder(border);
-		//not working
-	//	DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-	//	centerRenderer.setHorizontalAlignment( JLabel.LEFT );
-		MyTableCellRenderer centerRenderer = new MyTableCellRenderer();
-	//	centerRenderer.setBorder(border);
-		table.setDefaultRenderer(String.class, centerRenderer);
-		//table.getColumnModel().getColumn(0).
+		UIManager.getColor("Table.gridColor");
+	new MyTableCellRenderer();
 		
 		for (int i=0;i<tableModel.getColumnCount();i++) {
 			TableColumn a = table.getColumnModel().getColumn(i);

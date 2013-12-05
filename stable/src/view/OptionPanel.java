@@ -7,45 +7,34 @@ import interfaces.CwBrowser;
 
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Insets;
-
 import javax.swing.JButton;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.SystemColor;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Iterator;
 
+import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
-import javax.swing.JPopupMenu;
-import javax.swing.JTree;
-import javax.swing.JFormattedTextField;
-import javax.swing.JToolBar;
 import javax.swing.JSpinner;
 import javax.swing.JLabel;
-import javax.swing.GroupLayout;
 import javax.swing.SpinnerNumberModel;
-import javax.swing.GroupLayout.Alignment;
 import javax.swing.table.DefaultTableModel;
 
 import java.awt.FlowLayout;
-import java.awt.CardLayout;
-
 import crossword.*;
 import dictionary.*;
-
-import javax.swing.BoxLayout;
-
-import java.awt.Component;
 
 /**
  * @author Jakub Fortunka
@@ -53,30 +42,37 @@ import java.awt.Component;
  */
 public class OptionPanel extends JPanel implements ActionListener {
 	
-	private Window main;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7931596291324954652L;
+	
 	private JFrame frame;
 	private CrosswordPanel cw;
-	private JPanel mainPanel;
 	private JButton btnOpenDict,btnGenCw,btnLoadCw,btnPrint,btnSolveCw,btnSaveCw;
 	private JFileChooser fc;
 	private String newline = "\n";
 	private JSpinner height,width;
 	private InteliCwDB cwDB = null;
-//	Crossword krzyz;
 	private JTextArea clueArea;
 	private CwBrowser crosswords;
-	int indexOfCrossword = -1;
+	private int indexOfCrossword = -1, numberOfGeneratedCrosswords=0;
 	private JPanel cwIO;
+	private DefaultListModel<String> listModel;
+	private JList<String> list;
 	
-	public OptionPanel(CrosswordPanel cw, Window main,JTextArea text) {
+	public OptionPanel(CrosswordPanel cw, Window main,JTextArea text, JList<String> l) {
 		setBackground(SystemColor.activeCaption);
-		mainPanel = main.getContentPane();
-		frame = main;
-		this.main=main;
+		main.getContentPane();
+		this.frame = main;
 		this.cw=cw;
 		this.clueArea = text;
 		this.crosswords = new CwBrowser();
-
+		//this.list=l;
+		listModel = new DefaultListModel<String>();
+		l.setModel(listModel);
+		this.list=l;
+		
 		/* Panel w ktorym znajduja sie opcje generacji krzyzowki */	
 		
 		
@@ -124,19 +120,36 @@ public class OptionPanel extends JPanel implements ActionListener {
         btnSaveCw.addActionListener(this);
         cwIO.add(btnSaveCw);
         
+        list.addMouseListener(new MouseAdapter() {
+        	 public void mouseClicked(MouseEvent e) {
+        	        if (e.getClickCount() == 2) {
+        	        	if (list.getModel().getSize()==0) {
+        	        		JOptionPane.showMessageDialog(frame, "Lista jest pusta - nie mam do wybrania zadnej krzyzowki!");
+        					return ;
+        	        	}
+        	        	indexOfCrossword=list.getSelectedIndex();
+        	        	paintCrossword(true);
+        	        	writeClues();
+        	         }
+        	    }
+		});
+        
 	}
 	
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == btnGenCw) {
 			try {
-				Crossword cross = new Crossword();
+				/*Crossword cross = new Crossword();
 				Board b = new Board((int)width.getValue(), (int)height.getValue());
 				cross.setCwDB(cwDB);
 				cross.setBoard(b);
 				SimpleStrategy s = new SimpleStrategy();
 				cross.generate(s);
-				crosswords.addCrossword(cross);
+				crosswords.addCrossword(cross);*/
+				crosswords.addCrossword(crosswords.generateCrossword((int)height.getValue(), (int)width.getValue(), new SimpleStrategy(), cwDB));
 				indexOfCrossword++;
+				numberOfGeneratedCrosswords++;
+				listModel.addElement("Krzyzowka" + String.valueOf(numberOfGeneratedCrosswords));
 				/*String[] lista = new String[(int)width.getValue()];
 				for (int i=0;i<(int)width.getValue();i++) {
 					lista[i] = String.valueOf(i);
@@ -164,7 +177,7 @@ public class OptionPanel extends JPanel implements ActionListener {
 				
 				//cw.paint2();
 			}
-			catch (WordNotFoundException e1) {
+			catch (WordNotFoundException | FileNotFoundException e1) {
 				e1.printStackTrace();
 			}
 			
@@ -186,6 +199,7 @@ public class OptionPanel extends JPanel implements ActionListener {
 				indexOfCrossword++;
 				paintCrossword(true);
 				writeClues();
+				listModel.addElement(f.getName().substring(0, f.getName().length()-4));
 			} catch (IOException | WordNotFoundException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -243,6 +257,11 @@ public class OptionPanel extends JPanel implements ActionListener {
 		}
 		String[] row = new String[(int)width.getValue()+1];
 		DefaultTableModel tmp = new DefaultTableModel(lista,0) {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = -105499342896572860L;
+
 			@Override
 		    public boolean isCellEditable(int row, int column) {
 		        if (column==0) return false;

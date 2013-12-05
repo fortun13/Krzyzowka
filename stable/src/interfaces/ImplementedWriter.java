@@ -1,18 +1,12 @@
 package interfaces;
 
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.Date;
-import java.util.Iterator;
-
 import crossword.Crossword;
-import dictionary.CwEntry;
-import dictionary.Direction;
 
 /**
  * @author Jakub Fortunka
@@ -52,7 +46,9 @@ public class ImplementedWriter implements Writer {
 		
 		try
 	      {
-	         FileOutputStream fileOut = new FileOutputStream(String.valueOf(this.getUniqueID()) + ".txt");
+			File dir = new File("savedCw");
+			if (!dir.exists()) dir.mkdir();
+	         FileOutputStream fileOut = new FileOutputStream(String.valueOf("\\savedCw\\" + this.getUniqueID()) + ".txt");
 	         ObjectOutputStream out = new ObjectOutputStream(fileOut);
 	         out.writeObject(cw);
 	         out.close();

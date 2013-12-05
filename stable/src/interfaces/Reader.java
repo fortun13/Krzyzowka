@@ -4,6 +4,7 @@
 package interfaces;
 
 import java.io.IOException;
+import java.util.LinkedList;
 
 import crossword.Crossword;
 import crossword.WordNotFoundException;
@@ -14,5 +15,5 @@ import crossword.WordNotFoundException;
  */
 public interface Reader {
 
-	public Crossword getAllCws() throws IOException, WordNotFoundException;
+	public LinkedList<Crossword> getAllCws() throws IOException, WordNotFoundException;
 }

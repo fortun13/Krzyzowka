@@ -25,12 +25,20 @@ public class CwBrowser {
 	
 	public void readCrossword(String file) throws IOException, WordNotFoundException {
 		ImplementedReader r = new ImplementedReader(file);
-		//r.getAllCws(this);
-		addCrossword(r.getAllCws());
+		addCrossword(r.getCrossword());
+	}
+	
+	public void readAllCrosswords(String file) throws IOException, WordNotFoundException {
+		ImplementedReader r = new ImplementedReader(file);
+		addAllCrosswords(r.getAllCws());
 	}
 	
 	public void addCrossword(Crossword cw) {
 		crosswords.add(cw);
+	}
+	
+	public void addAllCrosswords(LinkedList<Crossword> l) {
+		this.crosswords=l;
 	}
 	
 	public Crossword generateCrossword(int height, int width,Strategy s, InteliCwDB cwDB) throws FileNotFoundException, WordNotFoundException {
