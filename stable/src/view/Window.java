@@ -6,6 +6,7 @@ package view;
 import interfaces.CwBrowser;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -24,6 +25,7 @@ import javax.swing.UIManager;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import javax.swing.BoxLayout;
+
 import java.awt.FlowLayout;
 import java.awt.Component;
 
@@ -74,6 +76,7 @@ public class Window extends JFrame {
 	 * Label do listy krzyzowek (zeby ladnie wygladalo)
 	 */
 	private JLabel listLabel;
+	private JScrollPane scrollPane_1;
 
 	/**
 	 * main - odpala aplikacje
@@ -97,7 +100,7 @@ public class Window extends JFrame {
 	public Window() {
 		setTitle("Program do generowania krzyzowek");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 709, 453);
+		setBounds(100, 100, 770, 540);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
@@ -106,22 +109,34 @@ public class Window extends JFrame {
 		crosswordPanel = new CrosswordPanel();
 		crosswordPanel.setBackground(Color.LIGHT_GRAY);
 		crosswordPanel.setBorder(null);
-		contentPane.add(crosswordPanel, BorderLayout.CENTER);
+		crosswordPanel.setPreferredSize(new Dimension(800,500));
+		final JScrollPane cwScroll = new JScrollPane(crosswordPanel);
+		contentPane.add(cwScroll,BorderLayout.CENTER);
+		//contentPane.add(crosswordPanel, BorderLayout.CENTER);
 		
 		
 		cluePanel = new JPanel();
+		cluePanel.setPreferredSize(new Dimension(500, 100));
 		cluePanel.setBackground(Color.LIGHT_GRAY);
-		contentPane.add(cluePanel, BorderLayout.SOUTH);
+		final JScrollPane scroll = new JScrollPane(cluePanel);
+		//contentPane.add(cluePanel, BorderLayout.SOUTH);
+		contentPane.add(scroll, BorderLayout.SOUTH);
+		cluePanel.setLayout(new BorderLayout(0, 0));
+		
+		scrollPane_1 = new JScrollPane();
+		cluePanel.add(scrollPane_1);
 		
 		clueTextArea = new JTextArea();
+		scrollPane_1.setViewportView(clueTextArea);
 		clueTextArea.setBackground(new Color(204, 204, 204));
 		clueTextArea.setEditable(false);
-		cluePanel.add(clueTextArea);
+		
+				
 		
 		listPanel = new JPanel();
 		listPanel.setBackground(Color.LIGHT_GRAY);
 		contentPane.add(listPanel, BorderLayout.WEST);
-		listPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		listPanel.setLayout(new BorderLayout(0, 0));
 		
 		scrollPane = new JScrollPane();
 		listPanel.add(scrollPane);
@@ -130,9 +145,9 @@ public class Window extends JFrame {
 		scrollPane.setViewportView(cwList);
 		cwList.setVisibleRowCount(10);
 		cwList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-
-		OptionPanel optionPanel = new OptionPanel(crosswordPanel,this,clueTextArea,cwList);
 		
+		OptionPanel optionPanel = new OptionPanel(crosswordPanel,this,clueTextArea,cwList);
+		crosswordPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		listLabel = new JLabel("Krzy\u017C\u00F3wki");
 		listLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		scrollPane.setColumnHeaderView(listLabel);

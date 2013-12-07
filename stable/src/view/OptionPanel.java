@@ -238,7 +238,7 @@ public class OptionPanel extends JPanel implements ActionListener {
 	}
 	
 	/**
-	 * Metoda wykonujaca rysowanie na {@link CrosswordPanel}. Wykorzystuje jej wewnetrzna metode {@link CrosswordPanel#paint2(int[])};
+	 * Metoda wykonujaca rysowanie na {@link CrosswordPanel}. Wykorzystuje jej wewnetrzna metode {@link CrosswordPanel#paint2(Board)};
 	 * 
 	 * @param isGenerating jesli true to krzyzowka nie wyswietla wpisanych hasel (pozostawione sa puste kwadraty)
 	 * @throws TooBigCrosswordException 

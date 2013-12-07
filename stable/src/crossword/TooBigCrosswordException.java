@@ -22,7 +22,7 @@ public class TooBigCrosswordException extends Exception {
 	}
 
 	/**
-	 * @param arg0 wiadomosc do przechowania w wyjatku
+	 * @param msg wiadomosc do przechowania w wyjatku
 	 */
 	public TooBigCrosswordException(String msg) {
 		super(msg);

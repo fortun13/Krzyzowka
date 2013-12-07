@@ -26,21 +26,22 @@ public class MyTableCellRenderer extends DefaultTableCellRenderer {
 	 */
 	private static final long serialVersionUID = -6996892836291668555L;
 	/**
-	 * kolejne dlugosci wpisow krzyzowki
+	 * tablica znajdujaca sie w krzyzowce, reprezentowana w postaci obiektu klasy {@link Board}
 	 */
 	
-	//int[] entries;
 	private Board b;
+	boolean isSimple;
 	
 	/**
 	 * Konstruktor klasy do renderowania komorek tabeli
-	 * @param e tablica z dlugosciami kolejnych wpisow krzyzowki
+	 * @param b tablica krzyzowki
+	 * @param isSimple czy krzyzowka dla ktorej bedzie renderowana tabela jest wykonana prosta strategia
 	 */
-	public MyTableCellRenderer(Board b) {
+	public MyTableCellRenderer(Board b, boolean isSimple) {
 		super();
         setOpaque(true);
-        //entries=e;
         this.b=b;
+        this.isSimple=isSimple;
 	}
 	
 	/**
@@ -51,19 +52,23 @@ public class MyTableCellRenderer extends DefaultTableCellRenderer {
 	@Override
     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 		super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-		//if (entries[row]>column-1) setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, Color.BLACK));
-		//else setBorder(BorderFactory.createEmptyBorder());
-		if (!(b.getCell(column, row) == null) || (column != 0 && b.getCell(column, row)==null && b.getCell(column-1, row)!=null)) {
-			setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, Color.BLACK));
-			setBackground(Color.WHITE);
+		if (isSimple) {
+			if (!(b.getCell(column, row) == null) || (column != 0 && b.getCell(column, row)==null && b.getCell(column-1, row)!=null)) {
+				setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, Color.BLACK));
+				setBackground(Color.WHITE);
+			}
+			else {
+				setBorder(BorderFactory.createEmptyBorder());
+				setBackground(Color.LIGHT_GRAY);
+			}
+			setHorizontalAlignment(CENTER);
+			return this;
 		}
 		else {
-			setBorder(BorderFactory.createEmptyBorder());
-			setBackground(Color.LIGHT_GRAY);
+			//Tutaj mozna umiescic sposob rysowania krzyzowki dla innego typu strategii (na razie do jednego, jeszcze bez pomyslu jak uniezaleznic calosc od implementacji)
+			return null;
 		}
-		//setBackground(Color.WHITE);
-		setHorizontalAlignment(CENTER);
-		return this;
+			
     }
 	
 	

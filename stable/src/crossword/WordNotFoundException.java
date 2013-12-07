@@ -15,7 +15,7 @@ public class WordNotFoundException extends Exception {
 	private static final long serialVersionUID = 2354623261297457403L;
 	
 	/**
-	 * wiadomosc do przekazania dalej na temat przyczyny wyrzucenia wyjatku
+	 * @param msg wiadomosc do przekazania dalej na temat przyczyny wyrzucenia wyjatku
 	 */
 	public WordNotFoundException(String msg) {
 		super(msg);

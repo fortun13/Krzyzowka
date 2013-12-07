@@ -137,10 +137,11 @@ public class Crossword implements Serializable {
 	 * @return true jesli slowo zawiera sie w krzyzowce (znajduje sie w entries); false jesli go tam nie ma
 	 */
 	public boolean contains(String word) {
+		boolean isInEntries=false;
 		for (CwEntry e : entries) {
-			if (e.getWord().equals(word)) return true;
+			if (e.getWord().equals(word)) isInEntries=true;
 		}
-		return false;
+		return isInEntries;
 	}
 	
 	/**

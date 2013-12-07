@@ -8,12 +8,17 @@ import javax.swing.JPanel;
 
 import java.awt.Color;
 import java.awt.FlowLayout;
+import java.awt.Font;
 
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
 import crossword.Board;
+
+import javax.swing.JScrollPane;
+
+import java.awt.BorderLayout;
 
 /**
  * Klasa reprezentujaca panel w ktorym rysowana jest krzyzowka. Znajduje sie tutaj metoda odpowiedzialna za narysowanie krzyzowki
@@ -53,9 +58,11 @@ public class CrosswordPanel extends JPanel {
 		tableModel = new DefaultTableModel(new Object[]{},0);
         setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
         table = new JTable();
+        table.setFont(new Font("Serif", Font.BOLD, 20));
+        add(table);
+        //scrollPane.setViewportView(table);
         table.setShowVerticalLines(false);
         table.setShowHorizontalLines(false);
-        add(table);
         table.setBackground(Color.LIGHT_GRAY);
         table.setModel(tableModel);
         
@@ -78,12 +85,12 @@ public class CrosswordPanel extends JPanel {
 	/**
 	 * Metoda zajmujaca sie "namalowaniem" krzyzowki w panelu
 	 * 
-	 * @param e tablica dlugosci kolejnych wpisow krzyzowki
+	 * @param b tablica reprezentujaca krzyzowke
 	 */
 	public void paint2(Board b) {
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 	//	MyTableCellRenderer r = new MyTableCellRenderer(e);
-		MyTableCellRenderer r = new MyTableCellRenderer(b);
+		MyTableCellRenderer r = new MyTableCellRenderer(b,true);
 		table.setDefaultRenderer(Object.class, r);
 		
 		for (int i=0;i<tableModel.getColumnCount();i++) {

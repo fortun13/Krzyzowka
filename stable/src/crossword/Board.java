@@ -54,7 +54,7 @@ public class Board implements Serializable {
 	 * @param height wysokosc tablicy
 	 */
 	public Board(int width,int height) throws TooBigCrosswordException {
-		if (height > 14) throw new TooBigCrosswordException("Niemozliwe jest wygenerowanie krzyzowki tak wysokiej");
+		if (height > 12) throw new TooBigCrosswordException("Niemozliwe jest wygenerowanie krzyzowki tak wysokiej");
 		if (width > 30) throw new TooBigCrosswordException("Niemozliwe jest wykonanie tak szerokiej krzyzowki");
 		this.width=width;
 		this.height=height;

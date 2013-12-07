@@ -94,7 +94,7 @@ public class CwBrowser {
 	 */
 	public Crossword generateCrossword(int height, int width,Strategy s, InteliCwDB cwDB) throws FileNotFoundException, WordNotFoundException, TooBigCrosswordException {
 		if (cwDB==null) {
-			cwDB = new InteliCwDB("cwdb.txt");
+			cwDB = new InteliCwDB("res/cwdb.txt");
 		}
     	Crossword cw = new Crossword();
     	cw.setCwDB(cwDB);
