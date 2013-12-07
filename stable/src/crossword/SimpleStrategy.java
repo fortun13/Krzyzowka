@@ -24,11 +24,12 @@ public class SimpleStrategy extends Strategy {
 	 * Metoda jest prosta - hasla sie nie przecinaja
 	 * 
 	 * {@inheritDoc}
+	 * @throws TooBigCrosswordException 
 	 * 
 	 */
 	
 	@Override
-	public CwEntry findEntry(Crossword cw) throws WordNotFoundException {
+	public CwEntry findEntry(Crossword cw) throws WordNotFoundException, TooBigCrosswordException {
 		Iterator<CwEntry> it = cw.getROEntryIter();
 		if (!it.hasNext()) {
 			Entry n = cw.getCwDB().getRandom(cw.getBoardCopy().getHeight());
@@ -54,7 +55,7 @@ public class SimpleStrategy extends Strategy {
 				e = cw.getCwDB().getRandom(pat);
 				licznik++;
 				if (licznik>300) throw new WordNotFoundException("Nie znaleziono wyrazu");
-				if (cw.contains(e.getWord())) e=null;
+				if (e!=null && cw.contains(e.getWord())) e=null;
 			}
 			CwEntry haslo = new CwEntry(e.getWord(),e.getClue(),Direction.HORIZ,0,i);
 			return haslo;

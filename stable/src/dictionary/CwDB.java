@@ -1,5 +1,5 @@
 /**
- * 
+ * Pakiet z klasami do obslugi bazy hasel krzyzowek
  */
 package dictionary;
 

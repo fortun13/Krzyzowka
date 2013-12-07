@@ -1,5 +1,5 @@
 /**
- * 
+ * Pakiet w którym znajduja sie klasy odpowiedzialne za graficzne wyswietlanie krzyzowki
  */
 package view;
 
@@ -147,7 +147,7 @@ public class OptionPanel extends JPanel implements ActionListener {
 		fc = new JFileChooser();
 		setLayout(new BorderLayout(0, 0));
 		JPanel cwSize = new JPanel();
-		cwSize.setBackground(new Color(143, 188, 143));
+		cwSize.setBackground(new Color(102, 204, 204));
 		add(cwSize, BorderLayout.NORTH);
 		JLabel lblHeight = new JLabel("Wysoko\u015B\u0107");
 		height = new JSpinner(new SpinnerNumberModel(5, 3, 50, 1));
@@ -173,7 +173,7 @@ public class OptionPanel extends JPanel implements ActionListener {
         /*panel zajmujacy sie wczytywanie z pliku*/
         
         cwIO = new JPanel();
-        cwIO.setBackground(new Color(143, 188, 143));
+        cwIO.setBackground(new Color(102, 204, 204));
         add(cwIO, BorderLayout.CENTER);
         
         btnLoadCw = new JButton("OtworzKrzyzowke");
@@ -241,57 +241,81 @@ public class OptionPanel extends JPanel implements ActionListener {
 	 * Metoda wykonujaca rysowanie na {@link CrosswordPanel}. Wykorzystuje jej wewnetrzna metode {@link CrosswordPanel#paint2(int[])};
 	 * 
 	 * @param isGenerating jesli true to krzyzowka nie wyswietla wpisanych hasel (pozostawione sa puste kwadraty)
+	 * @throws TooBigCrosswordException 
 	 */
 	private void paintCrossword(boolean isGenerating) {
-		String[] lista = new String[(int)width.getValue()];
-		for (int i=0;i<(int)width.getValue();i++) {
-			lista[i] = String.valueOf(i);
-		}
-		String[] row = new String[(int)width.getValue()+1];
-		int[] entriesLength = new int[(int)height.getValue()];
-		DefaultTableModel tmp = new DefaultTableModel(lista,0) {
-			/**
-			 * 
-			 */
-			private static final long serialVersionUID = -105499342896572860L;
-
-			@Override
-		    public boolean isCellEditable(int row, int column) {
-		        if (column==0) return false;
-		        else return true;
-		    }
-		};
-		int dlugoscWyrazu = 0;
-		Iterator<CwEntry> it = crosswords.getCrossword(indexOfCrossword).getROEntryIter();
-		it.next();
-		for (int i=0;i<(int)height.getValue();i++) {
-			dlugoscWyrazu = it.next().getWord().length();
-			entriesLength[i] = dlugoscWyrazu;
-			for (int k=0;k<row.length;k++) row[k]="";
-			for (int j=0;j<dlugoscWyrazu+1;j++){
-				if (j==0) row[j]=String.valueOf(i+1);
-				else if(isGenerating) row[j]="";
-				else row[j] = crosswords.getCrossword(indexOfCrossword).getBoardCopy().getCell(j-1, i).getContent();
+	//	String[] lista = new String[(int)width.getValue()];
+		int width;
+		try {
+			width = crosswords.getCrossword(indexOfCrossword).getBoardCopy().getWidth();
+			int height = crosswords.getCrossword(indexOfCrossword).getBoardCopy().getHeight();
+			String[] lista = new String[width];
+			for (int i=0;i<width;i++) {
+				lista[i] = String.valueOf(i);
 			}
-			tmp.addRow(row);
+			String[] row = new String[width+1];
+			int[] entriesLength = new int[height];
+			DefaultTableModel tmp = new DefaultTableModel(lista,0) {
+				/**
+				 * 
+				 */
+				private static final long serialVersionUID = -105499342896572860L;
+	
+				@Override
+			    public boolean isCellEditable(int row, int column) {
+			        if (column==0) return false;
+			        else return true;
+			    }
+			};
+			int dlugoscWyrazu = 0;
+			Iterator<CwEntry> it = crosswords.getCrossword(indexOfCrossword).getROEntryIter();
+			Board boardCopy = crosswords.getCrossword(indexOfCrossword).getBoardCopy();
+			it.next();
+			for (int i=0;i<height;i++) {
+				dlugoscWyrazu = it.next().getWord().length();
+				entriesLength[i] = dlugoscWyrazu;
+				for (int k=0;k<row.length;k++) row[k]="";
+				for (int j=0;j<dlugoscWyrazu+1;j++){
+					if (j==0) row[j]=String.valueOf(i+1);
+					else if(isGenerating) row[j]="";
+					else row[j] = boardCopy.getCell(j-1, i).getContent();
+				}
+				tmp.addRow(row);
+			}
+			
+			cw.setTableModel(tmp);
+			//cw.paint2(entriesLength);
+			cw.paint2(crosswords.getCrossword(indexOfCrossword).getBoardCopy());
+		} catch (TooBigCrosswordException e) {
+			JOptionPane.showMessageDialog(frame,
+					e.getMessage(),
+					"B³¹d generowania krzy¿ówki",
+					JOptionPane.ERROR_MESSAGE);
+			return ;
 		}
-		
-		cw.setTableModel(tmp);
-		cw.paint2(entriesLength);
 	}
 	
 	/**
 	 * Metoda wypisuje na odpowiednim panelu podpowiedzi do hasel krzyzowki
 	 */
 	private void writeClues() {
-		
-		Iterator<CwEntry> it = crosswords.getCrossword(indexOfCrossword).getROEntryIter();
-		it.next();
-		String tekst = "";
-		for (int i=0;i<(int)height.getValue();i++) {
-			tekst+= String.valueOf(i+1) + ". " + it.next().getClue() + newline;	
+		int height;
+		try {
+			height = crosswords.getCrossword(indexOfCrossword).getBoardCopy().getHeight();
+			Iterator<CwEntry> it = crosswords.getCrossword(indexOfCrossword).getROEntryIter();
+			it.next();
+			String tekst = "";
+			for (int i=0;i<height;i++) {
+				tekst+= String.valueOf(i+1) + ". " + it.next().getClue() + newline;	
+			}
+			clueArea.setText(tekst);
+		} catch (TooBigCrosswordException e) {
+			JOptionPane.showMessageDialog(frame,
+					e.getMessage(),
+					"B³¹d generowania krzy¿ówki",
+					JOptionPane.ERROR_MESSAGE);
+			return ;
 		}
-		clueArea.setText(tekst);
 	}
 	
 	/**
@@ -306,15 +330,25 @@ public class OptionPanel extends JPanel implements ActionListener {
 			listModel.addElement("Krzyzowka" + String.valueOf(numberOfGeneratedCrosswords));
 			paintCrossword(true);
 			writeClues();
-			
-			//cw.paint2();
 		}
 		catch (FileNotFoundException e1) {
-			JOptionPane.showMessageDialog(frame, "Program nie znalaz³ pliku s³ownika (wczyta³eœ go?)");
+			JOptionPane.showMessageDialog(frame,
+					"Program nie znalaz³ pliku s³ownika (wczyta³eœ go?)",
+					"Brak pliku slownika",
+					JOptionPane.INFORMATION_MESSAGE);
 			return ;
 		}
 		catch (WordNotFoundException ex) {
-			JOptionPane.showMessageDialog(frame, "Program wylosowal takie haslo, ze nie potrafi znalezc hasel. Sprobuj wygenerowac krzyzowke jeszcze raz :)");
+			JOptionPane.showMessageDialog(frame,
+					"Program wylosowal takie haslo, ze nie potrafi znalezc hasel.\n Sprobuj wygenerowac krzyzowke jeszcze raz :)",
+					"B³¹d generowania krzy¿ówki",
+					JOptionPane.INFORMATION_MESSAGE);
+			return ;
+		} catch (TooBigCrosswordException e) {
+			JOptionPane.showMessageDialog(frame,
+					e.getMessage(),
+					"B³¹d generowania krzy¿ówki",
+					JOptionPane.ERROR_MESSAGE);
 			return ;
 		}
 	}

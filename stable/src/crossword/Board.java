@@ -1,5 +1,5 @@
 /**
- * 
+ * Pakiet z klasami odpowiedzialnymi za oprogramowanie krzyzowki (logika aplikacji)
  */
 package crossword;
 
@@ -53,7 +53,9 @@ public class Board implements Serializable {
 	 * @param width szerokosc tablicy
 	 * @param height wysokosc tablicy
 	 */
-	public Board(int width,int height) {
+	public Board(int width,int height) throws TooBigCrosswordException {
+		if (height > 14) throw new TooBigCrosswordException("Niemozliwe jest wygenerowanie krzyzowki tak wysokiej");
+		if (width > 30) throw new TooBigCrosswordException("Niemozliwe jest wykonanie tak szerokiej krzyzowki");
 		this.width=width;
 		this.height=height;
 		this.board = new BoardCell[this.height][this.width];

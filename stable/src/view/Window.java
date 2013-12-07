@@ -104,21 +104,22 @@ public class Window extends JFrame {
 		setContentPane(contentPane);
 		
 		crosswordPanel = new CrosswordPanel();
-		crosswordPanel.setBackground(new Color(211, 211, 211));
+		crosswordPanel.setBackground(Color.LIGHT_GRAY);
 		crosswordPanel.setBorder(null);
 		contentPane.add(crosswordPanel, BorderLayout.CENTER);
 		
 		
 		cluePanel = new JPanel();
-		cluePanel.setBackground(Color.WHITE);
+		cluePanel.setBackground(Color.LIGHT_GRAY);
 		contentPane.add(cluePanel, BorderLayout.SOUTH);
 		
 		clueTextArea = new JTextArea();
-		clueTextArea.setBackground(Color.WHITE);
+		clueTextArea.setBackground(new Color(204, 204, 204));
 		clueTextArea.setEditable(false);
 		cluePanel.add(clueTextArea);
 		
 		listPanel = new JPanel();
+		listPanel.setBackground(Color.LIGHT_GRAY);
 		contentPane.add(listPanel, BorderLayout.WEST);
 		listPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		

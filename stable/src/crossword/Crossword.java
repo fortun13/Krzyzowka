@@ -86,8 +86,9 @@ public class Crossword implements Serializable {
 	 * Tworzy kopie tablicy i ja zwraca
 	 * @see Board
 	 * @return metoda zwraca kopie "tablicy" (czyli calej krzyzowki)
+	 * @throws TooBigCrosswordException 
 	 */
-	public Board getBoardCopy() {
+	public Board getBoardCopy() throws TooBigCrosswordException {
 		//return b;
 		Board board = new Board(b.getWidth(),b.getHeight());
 		for (int i=0;i<board.getHeight();i++) {
@@ -157,8 +158,9 @@ public class Crossword implements Serializable {
 	 * 
 	 * @param s wybrana strategia (SimpleStrategy badz ComplicatedStrategy)
 	 * @throws WordNotFoundException
+	 * @throws TooBigCrosswordException 
 	 */
-	public final void generate(Strategy s) throws WordNotFoundException {
+	public final void generate(Strategy s) throws WordNotFoundException, TooBigCrosswordException {
 		  CwEntry e = null;
 		  while((e = s.findEntry(this)) != null) {
 		    addCwEntry(e,s);

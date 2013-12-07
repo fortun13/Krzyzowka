@@ -1,5 +1,5 @@
 /**
- * 
+ * Pakiet z interfejsami zajmujacymi sie wczytywaniem i zapisywaniem krzyzowek
  */
 package interfaces;
 
@@ -90,8 +90,9 @@ public class CwBrowser {
 	 * @return wygenerowana krzyzowka
 	 * @throws FileNotFoundException
 	 * @throws WordNotFoundException
+	 * @throws TooBigCrosswordException 
 	 */
-	public Crossword generateCrossword(int height, int width,Strategy s, InteliCwDB cwDB) throws FileNotFoundException, WordNotFoundException {
+	public Crossword generateCrossword(int height, int width,Strategy s, InteliCwDB cwDB) throws FileNotFoundException, WordNotFoundException, TooBigCrosswordException {
 		if (cwDB==null) {
 			cwDB = new InteliCwDB("cwdb.txt");
 		}

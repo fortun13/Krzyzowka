@@ -22,7 +22,7 @@ public abstract class Strategy {
 	 * @return Wpis z bazy hasel ktory nadaje sie do krzyzowki
 	 * @throws WordNotFoundException
 	 */
-	public abstract CwEntry findEntry(Crossword cw) throws WordNotFoundException;
+	public abstract CwEntry findEntry(Crossword cw) throws WordNotFoundException, TooBigCrosswordException;
 	/**
 	 * metoda aktualizuje stan tablicy o nowy wpis krzyzowki
 	 * @param b plansza krzyzowki

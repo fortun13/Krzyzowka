@@ -13,6 +13,8 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
+import crossword.Board;
+
 /**
  * Klasa reprezentujaca panel w ktorym rysowana jest krzyzowka. Znajduje sie tutaj metoda odpowiedzialna za narysowanie krzyzowki
  * 
@@ -78,9 +80,10 @@ public class CrosswordPanel extends JPanel {
 	 * 
 	 * @param e tablica dlugosci kolejnych wpisow krzyzowki
 	 */
-	public void paint2(int[] e) {
+	public void paint2(Board b) {
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-		MyTableCellRenderer r = new MyTableCellRenderer(e);
+	//	MyTableCellRenderer r = new MyTableCellRenderer(e);
+		MyTableCellRenderer r = new MyTableCellRenderer(b);
 		table.setDefaultRenderer(Object.class, r);
 		
 		for (int i=0;i<tableModel.getColumnCount();i++) {
