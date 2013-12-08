@@ -60,7 +60,8 @@ public class Window extends JFrame {
 	/**
 	 * Lista wszystkich mozliwych do wyswietlenia krzyzowek
 	 */
-	private JList<String> cwList;
+	//private JList<String> cwList;
+	private JList cwList;
 	/**
 	 * Panel otaczajacy {@link #listPanel} dzieki ktoremu przy malym rozmiarze pojawia sie paski do przewijania
 	 */
@@ -136,7 +137,8 @@ public class Window extends JFrame {
 		scrollPane = new JScrollPane();
 		listPanel.add(scrollPane);
 		
-		cwList = new JList<String>();
+		//cwList = new JList<String>();
+		cwList = new JList();
 		scrollPane.setViewportView(cwList);
 		cwList.setVisibleRowCount(10);
 		cwList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);

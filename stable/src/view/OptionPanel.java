@@ -103,11 +103,12 @@ public class OptionPanel extends JPanel implements ActionListener {
 	/**
 	 * Model listy
 	 */
-	private DefaultListModel<String> listModel;
+	//private DefaultListModel<String> listModel;
+	private DefaultListModel listModel;
 	/**
 	 * lista na ktorej pojawiaja sie wygenerowane/wczytane krzyzowki
 	 */
-	private JList<String> list;
+	private JList list;
 	
 	/**
 	 * Kontruktor panelu
@@ -117,13 +118,13 @@ public class OptionPanel extends JPanel implements ActionListener {
 	 * @param text pole w ktorym beda wypisywane podpowiedzi {@link #clueArea}
 	 * @param l lista krzyzowek, ktora bedzie zarzadzana z tej klasy {@link #list}
 	 */
-	public OptionPanel(CrosswordPanel cw, Window main,JTextArea text, JList<String> l) {
+	public OptionPanel(CrosswordPanel cw, Window main,JTextArea text, JList l) {
 		setBackground(SystemColor.activeCaption);
 		this.frame = main;
 		this.cw=cw;
 		this.clueArea = text;
 		this.crosswords = new CwBrowser();
-		listModel = new DefaultListModel<String>();
+		listModel = new DefaultListModel();
 		l.setModel(listModel);
 		this.list=l;
 		
@@ -327,7 +328,7 @@ public class OptionPanel extends JPanel implements ActionListener {
 	 */
 	private void generateNewCrossword() {
 		try {
-			crosswords.addCrossword(crosswords.generateCrossword((int)height.getValue(), (int)width.getValue(), new SimpleStrategy(), cwDB));
+			crosswords.addCrossword(crosswords.generateCrossword((Integer)height.getValue(), (Integer)width.getValue(), new SimpleStrategy(), cwDB));
 			indexOfCrossword++;
 			numberOfGeneratedCrosswords++;
 			listModel.addElement("Krzyzowka" + String.valueOf(numberOfGeneratedCrosswords));
