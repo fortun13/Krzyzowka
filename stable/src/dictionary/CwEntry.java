@@ -20,15 +20,9 @@ public class CwEntry extends Entry implements Serializable {
 	 * pole potrzebne do serializacji obiektu tej klasy
 	 * 
 	*/
-	private static final long serialVersionUID = -6258824129283325212L;
-	
+	private static final long serialVersionUID = -6258824129283325212L;	
 	/**
-	 * wspolrzedna x pierwszego znaku wyrazu
-	 *  
-	 */
-	
-	/**
-	 * wspolrzedna y pierwszego znaku wyrazu
+	 * wspolrzedna x/y pierwszego znaku wyrazu
 	 */
 	private int x,y;
 	/**

@@ -3,15 +3,11 @@
  */
 package crossword;
 
-import java.util.Iterator;
-import java.util.Random;
-
 import dictionary.CwEntry;
-import dictionary.Direction;
-import dictionary.Entry;
+import exception.WordNotFoundException;
 
 /**
- * Nie zaimplementowana klasa generujaca skomplikowana wersje krzyzowki (krzyzojaco sie)
+ * Nie zaimplementowana klasa generujaca skomplikowana wersje krzyzowki (krzyzujaca sie)
  * 
  * @author Jakub Fortunka
  * @version 0.1
@@ -24,18 +20,6 @@ public class ComplicatedStrategy extends Strategy {
 	@Override
 	public CwEntry findEntry(Crossword cw) throws WordNotFoundException {
 		// TODO all method
-		Iterator<CwEntry> it = cw.getROEntryIter();
-		if (!it.hasNext()) {
-			Random rnd = new Random();
-			int r = rnd.nextInt(7)+2;
-			Entry n = cw.getCwDB().getRandom(r);
-			
-			CwEntry haslo = new CwEntry(n.getWord(),n.getClue(),Direction.VERT,0,0);
-			return haslo;
-		}
-		else {
-			
-		}
 		return null;
 	}
 

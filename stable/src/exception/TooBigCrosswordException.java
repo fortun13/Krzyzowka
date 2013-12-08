@@ -1,11 +1,12 @@
 /**
  * 
  */
-package crossword;
+package exception;
 
 /**
+ * Wyjatek obslugujacy sytuacje w ktorej uzytkownik podal zbyt duza wartosc wysokosci/szerokosci krzyzowki
  * @author Jakub Fortunka
- *
+ * @version 1.0
  */
 public class TooBigCrosswordException extends Exception {
 

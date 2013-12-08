@@ -12,22 +12,15 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
-
 import java.awt.Color;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JList;
 import javax.swing.ListSelectionModel;
-import javax.swing.LookAndFeel;
-import javax.swing.UIManager;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
-import javax.swing.BoxLayout;
-
 import java.awt.FlowLayout;
-import java.awt.Component;
 
 /**
  * @author Jakub Fortunka
@@ -36,7 +29,7 @@ import java.awt.Component;
 public class Window extends JFrame {
 
 	/**
-	 * 
+	 * zmienna potrzebna do serializacji
 	 */
 	private static final long serialVersionUID = -3493604451193932925L;
 	
@@ -76,7 +69,10 @@ public class Window extends JFrame {
 	 * Label do listy krzyzowek (zeby ladnie wygladalo)
 	 */
 	private JLabel listLabel;
-	private JScrollPane scrollPane_1;
+	/**
+	 * sluzy do generowania paska do przesuwania dla panulu w ktorym sa podpowiedzi
+	 */
+	private JScrollPane clueScroll;
 
 	/**
 	 * main - odpala aplikacje
@@ -107,7 +103,7 @@ public class Window extends JFrame {
 		setContentPane(contentPane);
 		
 		crosswordPanel = new CrosswordPanel();
-		crosswordPanel.setBackground(Color.LIGHT_GRAY);
+		crosswordPanel.setBackground(Color.WHITE);
 		crosswordPanel.setBorder(null);
 		crosswordPanel.setPreferredSize(new Dimension(800,500));
 		final JScrollPane cwScroll = new JScrollPane(crosswordPanel);
@@ -119,15 +115,14 @@ public class Window extends JFrame {
 		cluePanel.setPreferredSize(new Dimension(500, 100));
 		cluePanel.setBackground(Color.LIGHT_GRAY);
 		final JScrollPane scroll = new JScrollPane(cluePanel);
-		//contentPane.add(cluePanel, BorderLayout.SOUTH);
 		contentPane.add(scroll, BorderLayout.SOUTH);
 		cluePanel.setLayout(new BorderLayout(0, 0));
 		
-		scrollPane_1 = new JScrollPane();
-		cluePanel.add(scrollPane_1);
+		clueScroll = new JScrollPane();
+		cluePanel.add(clueScroll);
 		
 		clueTextArea = new JTextArea();
-		scrollPane_1.setViewportView(clueTextArea);
+		clueScroll.setViewportView(clueTextArea);
 		clueTextArea.setBackground(new Color(204, 204, 204));
 		clueTextArea.setEditable(false);
 		

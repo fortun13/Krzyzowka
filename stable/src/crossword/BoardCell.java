@@ -29,23 +29,11 @@ public class BoardCell implements Serializable{
 	 */
 	String content="";
 	/**
-	 * czy komorka moze rozpoczynac nowe haslo w poziomie
-	 */
-	/**
-	 * czy komorka moze byc czescia nowego hasla w poziomie
-	 */
-	/**
-	 * czy komorka moze konczyc nowe haslo w poziomie
+	 * czy komorka moze zaczynac/byc czescia/konczyc nowe haslo w poziomie
 	 */
 	boolean canHorizStart,canHorizIn,canHorizEnd;
 	/**
-	 * czy komorka moze rozpoczynac nowe haslo w pionie
-	 */
-	/**
-	 * czy komorka moze byc czescia nowego haslo w pionie
-	 */
-	/**
-	 * czy komorka moze konczyc nowe haslo w pionie
+	 * czy komorka moze zaczynac/byc czescia/konczyc nowe haslo w pionie
 	 */
 	boolean canVertiStart,canVertiIn,canVertiEnd;
 

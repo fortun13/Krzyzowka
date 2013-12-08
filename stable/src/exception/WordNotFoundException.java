@@ -1,7 +1,7 @@
 /**
  * 
  */
-package crossword;
+package exception;
 
 /**
  * Wyjatek ktory obsluguje sytuacje w ktorej program nie jest w stanie znalezc odpowiedniego slowa w slowniku

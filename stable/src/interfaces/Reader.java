@@ -12,6 +12,8 @@ import crossword.Crossword;
  * Interfejs obslugujacy wczytywanie krzyzowek
  * 
  * @author Jakub Fortunka
+ * @version 1.0
+ * 
  *
  */
 public interface Reader {

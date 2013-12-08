@@ -11,13 +11,13 @@ import javax.swing.JTextArea;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-
 import javax.swing.JButton;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.print.PrinterException;
 import java.awt.SystemColor;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -37,6 +37,9 @@ import java.awt.FlowLayout;
 
 import crossword.*;
 import dictionary.*;
+import exception.NotGeneratedAnyCrosswordException;
+import exception.TooBigCrosswordException;
+import exception.WordNotFoundException;
 
 /**
  * @author Jakub Fortunka
@@ -58,22 +61,7 @@ public class OptionPanel extends JPanel implements ActionListener {
 	 */
 	private CrosswordPanel cw;
 	/**
-	 * przycisk do otwierania slownika
-	 */
-	/**
-	 * przycisk do generowania krzyzowki
-	 */
-	/**
-	 * przycisk do otwierania krzyzowki/krzyzowek z pliku/folderu
-	 */
-	/**
-	 * przycisk do drukowania krzyzowki
-	 */
-	/**
-	 * przycisk do rozwiazywania krzyzowki
-	 */
-	/**
-	 * przycisk do zapisywania krzyzowki
+	 * przycisk do otwieraniaSlownika/Generowania krzyzowki/Zapisywania krzyzowki/Drukowania krzyzowki/Rozwiazywania krzyzowki/Zapisywania krzyzowki
 	 */
 	private JButton btnOpenDict,btnGenCw,btnLoadCw,btnPrint,btnSolveCw,btnSaveCw;
 	/**
@@ -85,10 +73,7 @@ public class OptionPanel extends JPanel implements ActionListener {
 	 */
 	private String newline = "\n";
 	/**
-	 * pole do wprowadzania wysokosci krzyzowki
-	 */
-	/**
-	 * pole do wprowadzania szerokosci krzyzowki
+	 * pole do wprowadzania wysokosci/szerokosci krzyzowki
 	 */
 	private JSpinner height,width;
 	/**
@@ -106,10 +91,11 @@ public class OptionPanel extends JPanel implements ActionListener {
 	/**
 	 * numer obecnie wyswietlanej krzyzowki 
 	 */
+	private int indexOfCrossword = -1;
 	/**
 	 * ilosc wygenerowanych krzyzowek
 	 */
-	private int indexOfCrossword = -1, numberOfGeneratedCrosswords=0;
+	private int numberOfGeneratedCrosswords=0;
 	/**
 	 * Panel w ktorym jest lista do zarzadzania wczytanymi krzyzowkami
 	 */
@@ -133,7 +119,6 @@ public class OptionPanel extends JPanel implements ActionListener {
 	 */
 	public OptionPanel(CrosswordPanel cw, Window main,JTextArea text, JList<String> l) {
 		setBackground(SystemColor.activeCaption);
-		main.getContentPane();
 		this.frame = main;
 		this.cw=cw;
 		this.clueArea = text;
@@ -165,6 +150,7 @@ public class OptionPanel extends JPanel implements ActionListener {
 		
 		btnPrint = new JButton("DrukujKrzyzowke");
 		cwSize.add(btnPrint);
+		btnPrint.addActionListener(this);
 		
 		btnSolveCw = new JButton("RozwiazKrzyzowke");
 		cwSize.add(btnSolveCw);
@@ -213,6 +199,7 @@ public class OptionPanel extends JPanel implements ActionListener {
 	 * {@link #saveCrossword()}
 	 * {@link #paintCrossword(boolean)}
 	 * {@link #writeClues()}
+	 * {@link #printCrossword()}
 	 * 
 	 * @param e rodzaj wykonanej akcji 
 	 * 
@@ -235,8 +222,12 @@ public class OptionPanel extends JPanel implements ActionListener {
 			paintCrossword(false);
 			writeClues();
 		}
+		else if (e.getSource() == btnPrint) {
+			printCrossword();
+		}
 	}
 	
+
 	/**
 	 * Metoda wykonujaca rysowanie na {@link CrosswordPanel}. Wykorzystuje jej wewnetrzna metode {@link CrosswordPanel#paint2(Crossword)};
 	 * 
@@ -292,6 +283,12 @@ public class OptionPanel extends JPanel implements ActionListener {
 					"B³¹d generowania krzy¿ówki",
 					JOptionPane.ERROR_MESSAGE);
 			return ;
+		} catch (NotGeneratedAnyCrosswordException e) {
+			JOptionPane.showMessageDialog(frame,
+				    e.getMessage(),
+				    "B³¹d zapisywania krzy¿ówki",
+				    JOptionPane.WARNING_MESSAGE);
+			return ;
 		}
 	}
 	
@@ -314,6 +311,12 @@ public class OptionPanel extends JPanel implements ActionListener {
 					e.getMessage(),
 					"B³¹d generowania krzy¿ówki",
 					JOptionPane.ERROR_MESSAGE);
+			return ;
+		} catch (NotGeneratedAnyCrosswordException e) {
+			JOptionPane.showMessageDialog(frame,
+				    e.getMessage(),
+				    "B³¹d zapisywania krzy¿ówki",
+				    JOptionPane.WARNING_MESSAGE);
 			return ;
 		}
 	}
@@ -417,13 +420,6 @@ public class OptionPanel extends JPanel implements ActionListener {
 	 * Metoda zajmuje sie zapisywaniem wyswietlanej krzyzowki do pliku
 	 */
 	private void saveCrossword() {
-		if (indexOfCrossword <0) {
-			JOptionPane.showMessageDialog(frame,
-				    "Nie wygenerowa³eœ ¿adnej krzy¿ówki, jak mam cokolwiek zapisaæ cwaniaku?",
-				    "B³¹d zapisywania krzy¿ówki",
-				    JOptionPane.WARNING_MESSAGE);
-			return ;
-		}
 		try {
 			crosswords.saveCrossword(crosswords.getCrossword(indexOfCrossword));
 			JOptionPane.showMessageDialog(frame, "Zapisa³em!");
@@ -431,7 +427,50 @@ public class OptionPanel extends JPanel implements ActionListener {
 			e1.printStackTrace();
 		} catch (IOException e1) {
 			e1.printStackTrace();
+		} catch (NotGeneratedAnyCrosswordException e) {
+			JOptionPane.showMessageDialog(frame,
+				    e.getMessage(),
+				    "B³¹d zapisywania krzy¿ówki",
+				    JOptionPane.WARNING_MESSAGE);
+			return ;
 		}
 		
 	}
+	
+	/**
+	 * Metoda ktora zajmuje sie drukowaniem wygenerowanej krzyzowki
+	 * niestety poki co drukuje sama krzyzowke, bez podpowiedzi
+	 */
+	private void printCrossword() {
+		try {
+			if (indexOfCrossword==-1) throw new NotGeneratedAnyCrosswordException("Nie wygenerowa³eœ ¿adnej krzy¿ówki!");
+		    boolean complete = cw.getTable().print();
+			//boolean complete = clueArea.print();
+		    if (complete) {
+		    	JOptionPane.showMessageDialog(frame,
+		    			"Wydrukowa³em krzy¿ówkê!",
+		    			"Drukowanie",
+		    			JOptionPane.INFORMATION_MESSAGE);
+		    } else {
+		    	JOptionPane.showMessageDialog(frame,
+					    "Drukowanie zostalo przerwane",
+					    "Blad drukowania",
+					    JOptionPane.WARNING_MESSAGE);
+				return ;
+		    }
+		} catch (PrinterException pe) {
+			JOptionPane.showMessageDialog(frame,
+				    "Drukowanie zostalo przerwane",
+				    "Blad drukowania",
+				    JOptionPane.WARNING_MESSAGE);
+		} catch (NotGeneratedAnyCrosswordException e) {
+			JOptionPane.showMessageDialog(frame,
+				    e.getMessage(),
+				    "B³¹d zapisywania krzy¿ówki",
+				    JOptionPane.WARNING_MESSAGE);
+			return ;
+		}
+	}
+	
+	
 }

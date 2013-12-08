@@ -3,8 +3,6 @@
  */
 package dictionary;
 
-import crossword.WordNotFoundException;
-
 import java.io.FileNotFoundException;
 import java.io.Serializable;
 import java.text.Collator;
@@ -13,6 +11,8 @@ import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.Locale;
 import java.util.Random;
+
+import exception.WordNotFoundException;
 
 /**
  * Klasa dziedziczaca po CwDB. Rozszerza funkcjonalnosc o losowani wyrazow oraz dodawanie wyrazow, by lista

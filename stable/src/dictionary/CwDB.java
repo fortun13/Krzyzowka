@@ -3,8 +3,6 @@
  */
 package dictionary;
 
-import crossword.WordNotFoundException;
-
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
@@ -14,6 +12,8 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.Scanner;
+
+import exception.WordNotFoundException;
 
 
 /**

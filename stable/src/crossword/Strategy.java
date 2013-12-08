@@ -4,6 +4,8 @@
 package crossword;
 
 import dictionary.CwEntry;
+import exception.TooBigCrosswordException;
+import exception.WordNotFoundException;
 
 /**
  * Klasa abstrakcyjna stanowiaca niejako interfejs do tworzenia roznych strategii.

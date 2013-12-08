@@ -8,18 +8,16 @@ import javax.swing.JPanel;
 
 import java.awt.Color;
 import java.awt.FlowLayout;
-import java.awt.Font;
 import java.util.Iterator;
 
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
-import crossword.Board;
 import crossword.Crossword;
 import crossword.SimpleStrategy;
-import crossword.TooBigCrosswordException;
 import dictionary.CwEntry;
+import exception.TooBigCrosswordException;
 
 /**
  * Klasa reprezentujaca panel w ktorym rysowana jest krzyzowka. Znajduje sie tutaj metoda odpowiedzialna za narysowanie krzyzowki
@@ -37,34 +35,25 @@ public class CrosswordPanel extends JPanel {
 	 * tabela ktora reprezentuje krzyzowke
 	 */
 	private JTable table;
+	
 	/**
 	 * model tabeli - zapewnia m.in. dynamiczny rozmiar krzyzowki
 	 */
 	private DefaultTableModel tableModel;
-	
-	/**
-	 * zwraca model krzyzowki
-	 * @return the tableModel
-	 */
-	public DefaultTableModel getTableModel() {
-		return tableModel;
-	}
 
 	/**
 	 * Kontruktor panelu. Tworzy tabele oraz model tabeli
 	 */
 	public CrosswordPanel() {
 		super();
+		setBorder(null);
 		setBackground(Color.LIGHT_GRAY);
 		tableModel = new DefaultTableModel(new Object[]{},0);
         setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
         table = new JTable();
-        table.setFont(new Font("Serif", Font.BOLD, 20));
+        
         add(table);
-        //scrollPane.setViewportView(table);
-        table.setShowVerticalLines(false);
-        table.setShowHorizontalLines(false);
-        table.setBackground(Color.LIGHT_GRAY);
+       
         table.setModel(tableModel);
         
         table.setShowGrid(false);
@@ -120,4 +109,21 @@ public class CrosswordPanel extends JPanel {
 			table.setDefaultRenderer(Object.class, r);
 		}
 	}
+	
+	/**
+	 * zwraca model krzyzowki
+	 * @return the tableModel
+	 */
+	public DefaultTableModel getTableModel() {
+		return tableModel;
+	}
+	
+	/**
+	 * zwraca tabele z krzyzowka
+	 * @return tabela z krzyzowka
+	 */
+	public JTable getTable() {
+		return table;
+	}
+
 }

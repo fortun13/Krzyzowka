@@ -11,6 +11,8 @@ import java.util.LinkedList;
 
 import dictionary.CwEntry;
 import dictionary.InteliCwDB;
+import exception.TooBigCrosswordException;
+import exception.WordNotFoundException;
 
 /**
  * Klasa reprezentujaca krzyzowke, zapewniajaca metode do generowania krzyzowek

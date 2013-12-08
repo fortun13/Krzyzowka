@@ -1,5 +1,5 @@
 /**
- * Pakiet z interfejsami zajmujacymi sie wczytywaniem i zapisywaniem krzyzowek
+ * interfaces Pakiet z interfejsami zajmujacymi sie wczytywaniem i zapisywaniem krzyzowek
  */
 package interfaces;
 
@@ -9,6 +9,9 @@ import java.util.LinkedList;
 
 import crossword.*;
 import dictionary.InteliCwDB;
+import exception.NotGeneratedAnyCrosswordException;
+import exception.TooBigCrosswordException;
+import exception.WordNotFoundException;
 
 /**
  * Klasa zajmujaca sie organizacja i zarzadzaniem wszystkimi krzyzowkami (wygenerowanymi i wczytanymi z plikow)
@@ -109,7 +112,8 @@ public class CwBrowser {
 	 * @param index indeks krzyzowki do zwrocenia
 	 * @return krzyzowka o podanym indeksie
 	 */
-	public Crossword getCrossword(int index) {
+	public Crossword getCrossword(int index) throws NotGeneratedAnyCrosswordException {
+		if (crosswords.isEmpty()) throw new NotGeneratedAnyCrosswordException("Nie wygenerowa³eœ ¿adnej krzy¿ówki!");
 		return crosswords.get(index);
 	}
 	

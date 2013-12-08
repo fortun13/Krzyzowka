@@ -9,6 +9,8 @@ import java.util.Random;
 import dictionary.Entry;
 import dictionary.CwEntry;
 import dictionary.Direction;
+import exception.TooBigCrosswordException;
+import exception.WordNotFoundException;
 
 /**
  * Implementacja interfejsu strategii - jest to strategia prosta, wyrazy sie nie przecinaja
@@ -47,18 +49,12 @@ public class SimpleStrategy extends Strategy {
 			if (i==first.getWord().length()) return null;
 			Random rnd = new Random();
 			int los = rnd.nextInt(cw.getBoardCopy().getWidth()-3)+2;
-			String pat = cw.getBoardCopy().createPattern(first.getX(), first.getY()+i, los, first.getY()+i);
+			String pat = cw.getBoardCopy().createPattern(first.getX(), first.getY()+i, los, first.getY()+i,this);
 			Entry e = cw.getCwDB().getRandom(pat);
 			while (e==null) {
-				/*los = rnd.nextInt(10)+2;
-				pat = cw.getBoardCopy().createPattern(first.getX(), first.getY()+i, los, first.getY()+i);
-				e = cw.getCwDB().getRandom(pat);
-				licznik++;
-				if (licznik>300) throw new WordNotFoundException("Nie znaleziono wyrazu");
-				if (e!=null && cw.contains(e.getWord())) e=null;*/
 				try {
 					los = rnd.nextInt(10)+2;
-					pat = cw.getBoardCopy().createPattern(first.getX(), first.getY()+i, los, first.getY()+i);
+					pat = cw.getBoardCopy().createPattern(first.getX(), first.getY()+i, los, first.getY()+i,this);
 					e = cw.getCwDB().getRandom(pat);
 					if (e!=null && cw.contains(e.getWord())) e=null;
 				}
@@ -66,7 +62,7 @@ public class SimpleStrategy extends Strategy {
 					e=null;
 				}
 				licznik++;
-				if (licznik>300) throw new WordNotFoundException("Nie znaleziono wyrazu");
+				if (licznik>500) throw new WordNotFoundException("Nie znaleziono wyrazu");
 			}
 			CwEntry haslo = new CwEntry(e.getWord(),e.getClue(),Direction.HORIZ,0,i);
 			return haslo;

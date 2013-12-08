@@ -5,13 +5,11 @@ package view;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Font;
 
 import javax.swing.BorderFactory;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
-
-import crossword.Board;
-import crossword.Crossword;
 
 /**
  * Klasa zastepujaca domyslny renderer dla komorek tabeli. Dzieki temu pola do wypelnienia sa ladnie zaznaczone :)
@@ -59,9 +57,13 @@ public class SimpleCwTableCellRenderer extends DefaultTableCellRenderer {
         }
         else {
         	setBorder(BorderFactory.createEmptyBorder());
-        	setBackground(Color.LIGHT_GRAY);
+        	setBackground(Color.WHITE);
         }
+		table.setFont(new Font("Serif", Font.BOLD, 20));
         setHorizontalAlignment(CENTER);
+        table.setShowVerticalLines(false);
+        table.setShowHorizontalLines(false);
+        table.setBackground(Color.WHITE);
         return this;
     }
 	

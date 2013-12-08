@@ -1,10 +1,12 @@
 /**
- * Pakiet z klasami odpowiedzialnymi za oprogramowanie krzyzowki (logika aplikacji)
+ * crossword Pakiet z klasami odpowiedzialnymi za oprogramowanie krzyzowki (logika aplikacji)
  */
 package crossword;
 
 import java.io.Serializable;
 import java.util.LinkedList;
+
+import exception.TooBigCrosswordException;
 
 
 /**
@@ -20,16 +22,12 @@ public class Board implements Serializable {
 	/**
 	 * pole potrzebne do serializacji obiektu klasy
 	 * @see Serializable
-	 *
-	 * 
 	 * 
 	 */
 	private static final long serialVersionUID = -995417858715296474L;
 	
 	/**
-	 * szerokosc krzyzowki
-	 * wysokosc krzyzowki
-	 * 
+	 * szerokosc/wysokosc krzyzowki
 	 */
 	private int width,height;
 	/**
@@ -122,35 +120,43 @@ public class Board implements Serializable {
 	 * @param fromy od ktorego y ma zostac rozpoczete badanie wyrazu
 	 * @param tox do ktorej wspolrzednej x ma zostac wykorzystany obszar na podstawie ktorego powstanie regex
 	 * @param toy do ktorej wspolrzednej y ma zostac wykorzystany obszar z ktorego powstanie regex
+	 * @param s Strategia w ktorej wywolywana jest ta metoda - jesli jest wywolywana przez SimpleStrategy regex jest tworzony inaczej (ma wieksza swobode) niz w przypadku
+	 * bardziej restrekcyjnej wersji krzyzowki
 	 * @return stworzone wyrazenie regularne pasujace do krzyzowki
 	 */
-	public String createPattern(int fromx, int fromy, int tox, int toy) {
+	public String createPattern(int fromx, int fromy, int tox, int toy,Strategy s) {
 		String pattern="";
 		pattern+="^";
-		/*if (fromx==tox) {
-			for (int i=fromy;i<toy;i++) {
-				if (board[i][fromx]==null) pattern+=".";
-				else {
-					if (!board[i][fromx].content.equals("!")) pattern+=board[i][fromx].content;
-					else pattern+=".";
-				}
-			}
+		if (s instanceof SimpleStrategy) {
+			int ilosc = tox-fromx;
+			String first = board[fromy][0].content;
+			first = first.toLowerCase();
+			pattern+=first + "[A-Za-z]{2,";
+			pattern+=String.valueOf(ilosc) + "}";
+			pattern+="$";
+			return pattern;
 		}
 		else {
-			for (int i=fromx;i<tox;i++) {
-				if (board[fromy][i] == null) pattern+=".";
-				else {
-					if (!board[fromy][i].content.equals("!")) pattern+=board[fromy][i].content;
-					else pattern+=".";
+			if (fromx==tox) {
+				for (int i=fromy;i<toy;i++) {
+					if (board[i][fromx]==null) pattern+=".";
+					else {
+						if (!board[i][fromx].content.equals("!")) pattern+=board[i][fromx].content;
+						else pattern+=".";
+					}
 				}
 			}
-		}*/
-		int ilosc = tox-fromx;
-		String first = board[fromy][0].content;
-		first = first.toLowerCase();
-		pattern+=first + "[A-Za-z]{2,";
-		pattern+=String.valueOf(ilosc) + "}";
-		pattern+="$";
-		return pattern;
+			else {
+				for (int i=fromx;i<tox;i++) {
+					if (board[fromy][i] == null) pattern+=".";
+					else {
+						if (!board[fromy][i].content.equals("!")) pattern+=board[fromy][i].content;
+						else pattern+=".";
+					}
+				}
+			}
+			pattern+="$";
+			return pattern;
+		}
 	}
 }
