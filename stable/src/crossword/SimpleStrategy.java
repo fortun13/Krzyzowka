@@ -3,6 +3,7 @@
  */
 package crossword;
 
+import java.io.Serializable;
 import java.util.Iterator;
 import java.util.Random;
 
@@ -19,8 +20,13 @@ import exception.WordNotFoundException;
  * @version 1.0
  * @see Strategy
  */
-public class SimpleStrategy extends Strategy {
+public class SimpleStrategy extends Strategy implements Serializable {
 	
+	/**
+	 * niezbedne do serializacji
+	 */
+	private static final long serialVersionUID = -8255406462824229713L;
+
 	/**
 	 * Implementacja metody do znajdowania hasel mozliwych do wpisania w krzyzowke.
 	 * Metoda jest prosta - hasla sie nie przecinaja

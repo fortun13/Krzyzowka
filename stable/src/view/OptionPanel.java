@@ -245,7 +245,7 @@ public class OptionPanel extends JPanel implements ActionListener {
 				lista[i] = String.valueOf(i);
 			}
 			String[] row = new String[width+1];
-			int[] entriesLength = new int[height];
+	//		int[] entriesLength = new int[height];
 			DefaultTableModel tmp = new DefaultTableModel(lista,0) {
 				/**
 				 * 
@@ -264,7 +264,7 @@ public class OptionPanel extends JPanel implements ActionListener {
 			it.next();
 			for (int i=0;i<height;i++) {
 				dlugoscWyrazu = it.next().getWord().length();
-				entriesLength[i] = dlugoscWyrazu;
+		//		entriesLength[i] = dlugoscWyrazu;
 				for (int k=0;k<row.length;k++) row[k]="";
 				for (int j=0;j<dlugoscWyrazu+1;j++){
 					if (j==0) row[j]=String.valueOf(i+1);
@@ -361,10 +361,6 @@ public class OptionPanel extends JPanel implements ActionListener {
 	 */
 	private void openDictionary() {
 		if(fc.showOpenDialog(frame) != JFileChooser.APPROVE_OPTION)	{
-			JOptionPane.showMessageDialog(frame,
-				    "Nie jestem w stanie zainicjowaæ okna wyboru pliku (coœ siê mocno popsu³o :()",
-				    "B³¹d inicjalizacji okna",
-				    JOptionPane.ERROR_MESSAGE);
 			return ;
 		}
 		
@@ -383,20 +379,28 @@ public class OptionPanel extends JPanel implements ActionListener {
 	 * Wewnetrzna metoda obslugujaca wczytywanie krzyzowki ze wskazanego pliku
 	 */
 	private void loadCrossword() {
+		fc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
 		if (fc.showOpenDialog(frame) != JFileChooser.APPROVE_OPTION) {
-			JOptionPane.showMessageDialog(frame,
-				    "Nie jestem w stanie zainicjowaæ okna wyboru pliku (coœ siê mocno popsu³o :()",
-				    "B³¹d inicjalizacji okna",
-				    JOptionPane.ERROR_MESSAGE);
 			return ;
 		}
 		File f = fc.getSelectedFile();
 		try {
-			crosswords.readCrossword(f.getAbsolutePath());
-			indexOfCrossword++;
-			paintCrossword(true);
-			writeClues();
-			listModel.addElement(f.getName().substring(0, f.getName().length()-4));
+			if (f.isDirectory()) {
+				indexOfCrossword=crosswords.readAllCrosswords(f.getAbsolutePath());
+				paintCrossword(true);
+				writeClues();
+				File[] pliki = f.listFiles();
+				for (File file : pliki) {
+					listModel.addElement(file.getName().substring(0,file.getName().length()-4));
+				}
+			}
+			else {
+				crosswords.readCrossword(f.getAbsolutePath());
+				indexOfCrossword++;
+				paintCrossword(true);
+				writeClues();
+				listModel.addElement(f.getName().substring(0, f.getName().length()-4));
+			}
 		} catch (IOException e1) {
 			JOptionPane.showMessageDialog(frame,
 				    "Problemy z wczytywaniem (spróbuj ponownie, mo¿e siê uda ;))",

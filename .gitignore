@@ -29,6 +29,8 @@ local.properties
 .buildpath
 
 #javadoc
+res/
+build/
 doc/
 savedCw/
 

@@ -56,13 +56,14 @@ public class CwBrowser {
 	 * Metoda wczytujaca wszystkie krzyzowki z folderu
 	 * 
 	 * @param file sciezka do folderu z krzyzowkami
+	 * @return liczba wczytanych krzyzowek
 	 * @throws IOException
 	 * @throws WordNotFoundException
 	 * @throws ClassNotFoundException
 	 */
-	public void readAllCrosswords(String file) throws IOException, WordNotFoundException, ClassNotFoundException {
+	public int readAllCrosswords(String file) throws IOException, WordNotFoundException, ClassNotFoundException {
 		ImplementedReader r = new ImplementedReader(file);
-		addAllCrosswords(r.getAllCws());
+		return addAllCrosswords(r.getAllCws());
 	}
 	
 	/**
@@ -78,9 +79,11 @@ public class CwBrowser {
 	 * Metoda dodajaca do aktualnej listy {@link interfaces.CwBrowser#crosswords} wczytane krzyzowki
 	 * 
 	 * @param l lista krzyzowek do dodania do aktualnej listy
+	 * @return liczba wczytanych krzyzowek
 	 */
-	public void addAllCrosswords(LinkedList<Crossword> l) {
-		l.addAll(l);
+	public int addAllCrosswords(LinkedList<Crossword> l) {
+		crosswords.addAll(l);
+		return crosswords.size()-1;
 	}
 	
 	/**
