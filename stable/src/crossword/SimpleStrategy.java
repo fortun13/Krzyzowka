@@ -50,12 +50,23 @@ public class SimpleStrategy extends Strategy {
 			String pat = cw.getBoardCopy().createPattern(first.getX(), first.getY()+i, los, first.getY()+i);
 			Entry e = cw.getCwDB().getRandom(pat);
 			while (e==null) {
-				los = rnd.nextInt(10)+2;
+				/*los = rnd.nextInt(10)+2;
 				pat = cw.getBoardCopy().createPattern(first.getX(), first.getY()+i, los, first.getY()+i);
 				e = cw.getCwDB().getRandom(pat);
 				licznik++;
 				if (licznik>300) throw new WordNotFoundException("Nie znaleziono wyrazu");
-				if (e!=null && cw.contains(e.getWord())) e=null;
+				if (e!=null && cw.contains(e.getWord())) e=null;*/
+				try {
+					los = rnd.nextInt(10)+2;
+					pat = cw.getBoardCopy().createPattern(first.getX(), first.getY()+i, los, first.getY()+i);
+					e = cw.getCwDB().getRandom(pat);
+					if (e!=null && cw.contains(e.getWord())) e=null;
+				}
+				catch (WordNotFoundException exp) {
+					e=null;
+				}
+				licznik++;
+				if (licznik>300) throw new WordNotFoundException("Nie znaleziono wyrazu");
 			}
 			CwEntry haslo = new CwEntry(e.getWord(),e.getClue(),Direction.HORIZ,0,i);
 			return haslo;

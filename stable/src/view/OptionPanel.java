@@ -238,7 +238,7 @@ public class OptionPanel extends JPanel implements ActionListener {
 	}
 	
 	/**
-	 * Metoda wykonujaca rysowanie na {@link CrosswordPanel}. Wykorzystuje jej wewnetrzna metode {@link CrosswordPanel#paint2(Board)};
+	 * Metoda wykonujaca rysowanie na {@link CrosswordPanel}. Wykorzystuje jej wewnetrzna metode {@link CrosswordPanel#paint2(Crossword)};
 	 * 
 	 * @param isGenerating jesli true to krzyzowka nie wyswietla wpisanych hasel (pozostawione sa puste kwadraty)
 	 * @throws TooBigCrosswordException 
@@ -285,7 +285,7 @@ public class OptionPanel extends JPanel implements ActionListener {
 			
 			cw.setTableModel(tmp);
 			//cw.paint2(entriesLength);
-			cw.paint2(crosswords.getCrossword(indexOfCrossword).getBoardCopy());
+			cw.paint2(crosswords.getCrossword(indexOfCrossword));
 		} catch (TooBigCrosswordException e) {
 			JOptionPane.showMessageDialog(frame,
 					e.getMessage(),

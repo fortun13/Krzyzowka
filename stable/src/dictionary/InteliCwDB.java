@@ -89,12 +89,12 @@ public class InteliCwDB extends CwDB implements Serializable {
 	 * Metoda wyszukuje w slowniku i zwraca losowy wyraz, ktory pasuje do podanego wyrazenia regularnego
 	 * 
 	 * @param pattern wyrazenie regularne dla ktorego chcemy znalezc wyraz
-	 * @return wyraz odpowiadajacy podanego wyrazeniu regularnemu, jezeli nie znajdzie, zwraca null
+	 * @return wyraz odpowiadajacy podanego wyrazeniu regularnemu, jezeli nie znajdzie, rzuca wyjatek {@link WordNotFoundException}
 	 * @throws WordNotFoundException
 	 */
 	public Entry getRandom(String pattern) throws WordNotFoundException {
 		LinkedList<Entry> lista = findAll(pattern);
-		if (lista.isEmpty()) return null;
+		if (lista.isEmpty()) throw new WordNotFoundException("Nie znaleziono slowa pasujacego do regexa");
 		Random rnd = new Random();
 		return lista.get(rnd.nextInt(lista.size()));
 	}

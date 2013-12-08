@@ -9,16 +9,17 @@ import javax.swing.JPanel;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.util.Iterator;
 
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
 import crossword.Board;
-
-import javax.swing.JScrollPane;
-
-import java.awt.BorderLayout;
+import crossword.Crossword;
+import crossword.SimpleStrategy;
+import crossword.TooBigCrosswordException;
+import dictionary.CwEntry;
 
 /**
  * Klasa reprezentujaca panel w ktorym rysowana jest krzyzowka. Znajduje sie tutaj metoda odpowiedzialna za narysowanie krzyzowki
@@ -85,13 +86,12 @@ public class CrosswordPanel extends JPanel {
 	/**
 	 * Metoda zajmujaca sie "namalowaniem" krzyzowki w panelu
 	 * 
-	 * @param b tablica reprezentujaca krzyzowke
+	 * @param cw obiekt krzyzowki ktora chcemy zareprezentowac na ekranie
+	 * @throws TooBigCrosswordException 
 	 */
-	public void paint2(Board b) {
+	public void paint2(Crossword cw) throws TooBigCrosswordException {
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-	//	MyTableCellRenderer r = new MyTableCellRenderer(e);
-		MyTableCellRenderer r = new MyTableCellRenderer(b,true);
-		table.setDefaultRenderer(Object.class, r);
+		setTableCellRenderer(cw);
 		
 		for (int i=0;i<tableModel.getColumnCount();i++) {
 			TableColumn a = table.getColumnModel().getColumn(i);
@@ -99,5 +99,25 @@ public class CrosswordPanel extends JPanel {
 			table.setRowHeight(40);
 		}
         super.repaint();
+	}
+	
+	/**
+	 * Metoda pozwala ustawic odpowiedni Renderer dla komorek tabeli w zaleznosci od strategii krzyzowki
+	 * @param cw krzyzowka ktora ma zostac "namalowana"
+	 * @throws TooBigCrosswordException {@link TooBigCrosswordException}
+	 */
+	private void setTableCellRenderer(Crossword cw) throws TooBigCrosswordException {
+		if (cw.getStrategy() instanceof SimpleStrategy) {
+			Iterator<CwEntry> it = cw.getROEntryIter();
+			int[] e = new int[cw.getBoardCopy().getHeight()];
+			int counter = 0;
+			it.next();
+			while (it.hasNext()) {
+				e[counter] = it.next().getWord().length();
+				counter++;
+			}
+			SimpleCwTableCellRenderer r = new SimpleCwTableCellRenderer(e);
+			table.setDefaultRenderer(Object.class, r);
+		}
 	}
 }

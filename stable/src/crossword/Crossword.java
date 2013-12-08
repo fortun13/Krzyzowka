@@ -45,6 +45,12 @@ public class Crossword implements Serializable {
 	private final long ID;
 	
 	/**
+	 * obiekt strategii sluzacy do zidentyfikowania rodzaju strategii (potrzebne do prawidlowego
+	 * rysowania krzyzowki)
+	 */
+	private Strategy s;
+	
+	/**
 	 * Kontruktor domyslny. Ustawia ID na -1; wywoluje konstruktor {@link Board}
 	 */
 	public Crossword() {
@@ -163,8 +169,13 @@ public class Crossword implements Serializable {
 	 */
 	public final void generate(Strategy s) throws WordNotFoundException, TooBigCrosswordException {
 		  CwEntry e = null;
+		  this.s=s;
 		  while((e = s.findEntry(this)) != null) {
 		    addCwEntry(e,s);
 		  }
+	}
+	
+	public Strategy getStrategy() {
+		return s;
 	}
 }
